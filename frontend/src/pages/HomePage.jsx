@@ -1,7 +1,7 @@
 function HomePage() {
   return (
     <div>
-      Home page (there will be all product cards...)
+      <h1>Home page (there will be all product cards...)</h1>
     </div>
   )
 }

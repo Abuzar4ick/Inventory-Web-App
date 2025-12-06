@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 
 function RootLayout() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white text-black">
       <header>{/* There will be navbar */}</header>
       <main>
         <Outlet />
