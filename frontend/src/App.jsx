@@ -5,6 +5,7 @@ import RootLayout from "./layouts/RootLayout";
 // pages
 import HomePage from "./pages/HomePage";
 
+import LoginPage from "./pages/LoginPage";
 function App() {
   const router = createBrowserRouter([
     {
@@ -14,6 +15,10 @@ function App() {
         {
           index: true,
           element: <HomePage />
+        },
+        {
+          path: "login",
+          element: <LoginPage />
         }
       ]
     }
