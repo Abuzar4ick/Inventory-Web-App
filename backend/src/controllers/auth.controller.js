@@ -18,36 +18,29 @@ export const signup = async (req, res) => {
         .json({ message: "Parol kamida 6 ta belgidan iborat bo'lishi kerak" });
     }
 
-    const { data: user, error } = await supabase
+    const { data: existingUser } = await supabase
       .from("users")
       .select()
       .eq("username", username)
       .single();
 
-    if (user)
+    if (existingUser)
       return res
         .status(400)
         .json({ message: "Foydalanuvchi nomi allaqachon mavjud" });
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const { data: savedUser, error: insertError } = await supabase
       .from("users")
       .insert({ name, username, password: hashedPassword })
-      .select()
+      .select("id, name, username")
       .single();
 
-    if (insertError) {
-      throw insertError;
-    }
+    if (insertError) throw insertError;
 
     generateToken(savedUser.id, res);
-    res.status(201).json({
-      id: savedUser.id,
-      name: savedUser.name,
-      username: savedUser.username,
-    });
+    res.status(201).json(savedUser);
   } catch (error) {
     console.error(`Error in signup controller: ${error}`);
     res.status(500).json({ message: "Internal server error" });
