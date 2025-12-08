@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import toast from "react-hot-toast"
 
 const LoginPage = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  // toggle password
+  const handleToggleShow = () => setShowPassword(!showPassword);
+
+  // prevent reload
+  const handleSubmit =(e)=>{
+    e.preventDefault()
+
+    if (!e.target.username.value || !e.target.password.value) {
+      toast.error("Barcha ma'lumotlar talab qilinadi")
+    }
+  }
+
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
-      {/* Login form container */}
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm">
         <h2 className="text-2xl font-semibold text-center mb-6 text-gray-900">
           Kirish
         </h2>
 
-        <form className="space-y-4">
-          {/* Foydalanuvchi nomi */}
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          {/* Username */}
           <div>
             <label
               htmlFor="username"
@@ -18,15 +35,18 @@ const LoginPage = () => {
             >
               Foydalanuvchi nomi
             </label>
+
             <input
               type="text"
               id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               placeholder="Foydalanuvchi nomi..."
-              className="input input-bordered w-full "
+              className="input input-bordered w-full bg-white text-black border-gray-400"
             />
           </div>
 
-          {/* Parol */}
+          {/* Password */}
           <div>
             <label
               htmlFor="password"
@@ -34,19 +54,29 @@ const LoginPage = () => {
             >
               Parol
             </label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Parol..."
-              className="input input-bordered w-full bg-sky-50"
-            />
+
+            <div className="relative">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Parol..."
+                className="input input-bordered w-full bg-white text-black border-gray-400"
+              />
+
+              {/* eye icon */}
+              <button
+                type="button"
+                onClick={handleToggleShow}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-black text-xl"
+              >
+                {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+              </button>
+            </div>
           </div>
 
-          {/* Kirish button */}
-          <button
-            type="submit"
-            className="btn btn-primary w-full"
-          >
+          <button type="submit" className="btn btn-primary w-full">
             Kirish
           </button>
         </form>
