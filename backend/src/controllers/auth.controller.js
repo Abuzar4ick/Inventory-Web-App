@@ -46,3 +46,40 @@ export const signup = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const login = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ message: "Barcha ma'lumotar talab qilinadi" });
+    }
+
+    const { data: user, error } = await supabase
+      .from("users")
+      .select()
+      .eq("username", username)
+      .single();
+
+    if (error || !user) {
+      return res.status(400).json({ message: "Hisob maʼlumotlari yaroqsiz" });
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect)
+      return res.status(400).json({ message: "Hisob maʼlumotlari yaroqsiz" });
+
+    generateToken(user.id, res);
+
+    res.status(200).json({
+      id: user.id,
+      name: user.name,
+      username: user.username,
+    });
+  } catch (error) {
+    console.error("Error in update profile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
