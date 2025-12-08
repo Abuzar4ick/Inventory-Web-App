@@ -6,6 +6,7 @@ export const generateToken = (userId, res) => {
   if (!JWT_SECRET) {
     throw new Error("JWT_SECRET is not configured");
   }
+  
   const token = jwt.sign({ userId }, JWT_SECRET, {
     expiresIn: "7d",
   });

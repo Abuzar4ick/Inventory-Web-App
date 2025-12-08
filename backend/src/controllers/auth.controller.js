@@ -83,3 +83,33 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const logout = async (_, res) => {
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+  });
+
+  res.status(200).json({ message: "Hisobdan muvaffaqiyatli chiqdingiz" });
+};
+
+export const profile = async (req, res) => {
+  try {
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("id, name, username")
+      .eq("id", req.user.id)
+      .single();
+
+    if (error) {
+      console.error("Supabase error:", error);
+      return res.status(500).json({ message: "Database error" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(`Error in profile controller: ${error}`);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
