@@ -1,2 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+.auth-btn {
+  @apply w-full bg-[#605dff] text-white rounded-sm py-2.5 font-medium
+    hover:bg-[#504dff] focus:ring-2 focus:ring-[#7f7aff];
+}

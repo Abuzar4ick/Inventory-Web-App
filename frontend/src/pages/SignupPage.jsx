@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import toast from "react-hot-toast";
+import { useAuthStore } from "../store/useAuthStore";
+import { FiLoader } from "react-icons/fi";
 
 const SignupPage = () => {
   const [username, setUsername] = useState("");
   const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const { signup, isSigningUp } = useAuthStore();
 
   const handleToggleShow = () => setShowPassword(!showPassword);
 
@@ -18,7 +21,7 @@ const SignupPage = () => {
       return toast.error("Barcha maydonlar talab qilinadi");
     }
 
-    toast.success("Ro'yxatdan o'tildi!");
+    signup({ name: fullname, username, password });
   };
 
   return (
@@ -29,10 +32,12 @@ const SignupPage = () => {
         </h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-
           {/* Full Name */}
           <div>
-            <label htmlFor="fullname" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="fullname"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               To‘liq ism
             </label>
             <input
@@ -47,7 +52,10 @@ const SignupPage = () => {
 
           {/* Username */}
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Foydalanuvchi nomi
             </label>
             <input
@@ -61,7 +69,10 @@ const SignupPage = () => {
           </div>
           {/* Password */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Parol
             </label>
             <div className="relative">
@@ -83,8 +94,18 @@ const SignupPage = () => {
             </div>
           </div>
 
-          <button type="submit" className="btn btn-primary w-full">
-            Ro'yxatdan o'tish
+          <button
+            type="submit"
+            className={`auth-btn ${
+              isSigningUp ? "cursor-not-allowed opacity-50" : ""
+            }`}
+            disabled={isSigningUp}
+          >
+            {isSigningUp ? (
+              <FiLoader className="w-5 h-5 animate-spin mx-auto" />
+            ) : (
+              "Ro'yxatdan o'tish"
+            )}
           </button>
         </form>
       </div>
