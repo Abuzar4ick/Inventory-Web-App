@@ -1,23 +1,27 @@
 import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
+import { FiLoader } from "react-icons/fi";
+import { useAuthStore } from "../store/useAuthStore";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // toggle password
+  const { login, isLoggingIn } = useAuthStore();
+
   const handleToggleShow = () => setShowPassword(!showPassword);
 
-  // prevent reload
-  const handleSubmit =(e)=>{
-    e.preventDefault()
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    if (!e.target.username.value || !e.target.password.value) {
-      toast.error("Barcha ma'lumotlar talab qilinadi")
+    if (!username || !password) {
+      return toast.error("Barcha ma'lumotlar talab qilinadi");
     }
-  }
+
+    login({ username, password });
+  };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -29,13 +33,9 @@ const LoginPage = () => {
         <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Username */}
           <div>
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
               Foydalanuvchi nomi
             </label>
-
             <input
               type="text"
               id="username"
@@ -48,13 +48,9 @@ const LoginPage = () => {
 
           {/* Password */}
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
               Parol
             </label>
-
             <div className="relative">
               <input
                 id="password"
@@ -64,8 +60,6 @@ const LoginPage = () => {
                 placeholder="Parol..."
                 className="input input-bordered w-full bg-white text-black border-gray-400"
               />
-
-              {/* eye icon */}
               <button
                 type="button"
                 onClick={handleToggleShow}
@@ -76,8 +70,19 @@ const LoginPage = () => {
             </div>
           </div>
 
-          <button type="submit" className="btn btn-primary w-full">
-            Kirish
+          {/* КНОПКА КАК В SIGNUP */}
+          <button
+            type="submit"
+            className={`auth-btn ${
+              isLoggingIn ? "cursor-not-allowed opacity-50" : ""
+            }`}
+            disabled={isLoggingIn}
+          >
+            {isLoggingIn ? (
+              <FiLoader className="w-5 h-5 animate-spin mx-auto" />
+            ) : (
+              "Kirish"
+            )}
           </button>
         </form>
       </div>
