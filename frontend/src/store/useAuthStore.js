@@ -5,10 +5,7 @@ import toast from "react-hot-toast";
 export const useAuthStore = create((set, get) => ({
   authUser: null,
   isSigningUp: false,
-<<<<<<< HEAD
-=======
   isLoggingIn: false,
->>>>>>> main
 
   signup: async (data) => {
     set({ isSigningUp: true });
@@ -24,8 +21,6 @@ export const useAuthStore = create((set, get) => ({
       set({ isSigningUp: false });
     }
   },
-<<<<<<< HEAD
-=======
 
   login: async (data) => {
     set({ isLoggingIn: true });
@@ -41,5 +36,4 @@ export const useAuthStore = create((set, get) => ({
       set({ isLoggingIn: false });
     }
   },
->>>>>>> main
 }));
