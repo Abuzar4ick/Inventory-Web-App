@@ -6,6 +6,7 @@ export const useAuthStore = create((set, get) => ({
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
+
   signup: async (data) => {
     set({ isSigningUp: true });
 
@@ -20,7 +21,8 @@ export const useAuthStore = create((set, get) => ({
       set({ isSigningUp: false });
     }
   },
-    login: async (data) => {
+
+  login: async (data) => {
     set({ isLoggingIn: true });
 
     try {
