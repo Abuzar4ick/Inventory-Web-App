@@ -12,7 +12,7 @@ export const createNewProduct = async (req, res) => {
 
     const { data: newProduct } = await supabase
       .from("products")
-      .insert({ name, quantity, min_quantity })
+      .insert({ name, quantity, min_quantity, user_id: req.user.id })
       .select("id, name, quantity, min_quantity")
       .single();
 
@@ -25,7 +25,11 @@ export const createNewProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
   try {
-    const { data: products } = await supabase.from("products").select();
+    const { data: products } = await supabase
+      .from("products")
+      .select()
+      .eq("user_id", req.user.id);
+
     res.status(200).json(products);
   } catch (error) {
     console.error(`Error in getAllProducts controller: ${error}`);
@@ -41,6 +45,7 @@ export const getProductById = async (req, res) => {
       .from("products")
       .select()
       .eq("id", productId)
+      .eq("user_id", req.user.id)
       .single();
 
     if (error || !product) {
@@ -69,6 +74,7 @@ export const updateProductById = async (req, res) => {
       .from("products")
       .select()
       .eq("id", productId)
+      .eq("user_id", req.user.id)
       .single();
 
     if (getError || !oldProduct) {
@@ -104,15 +110,41 @@ export const deleteProductById = async (req, res) => {
     const { data, error } = await supabase
       .from("products")
       .delete()
-      .eq("id", productId);
+      .eq("id", productId)
+      .eq("user_id", req.user.id);
 
     if (error) {
       return res.status(400).json({ message: "O'chirishda xatolik yoki" });
     }
 
-    res.status(200).json({ message: "Mahsulot muvaffaqiyatli o'chirildi", data });
+    res
+      .status(200)
+      .json({ message: "Mahsulot muvaffaqiyatli o'chirildi", data });
   } catch (error) {
     console.error(`Error in deleteProductById controller: ${error}`);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getAllLowStockProducts = async (req, res) => {
+  try {
+    const { data: products, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("user_id", req.user.id);
+
+    if (error) {
+      console.error(`Supabase error: ${error.message}`);
+      return res.status(400).json({ message: "Mahsulotlarni olib bo‘lmadi" });
+    }
+
+    const lowStockProducts = await products.filter(
+      (product) => product.quantity <= product.min_quantity
+    );
+
+    res.status(200).json(lowStockProducts);
+  } catch (error) {
+    console.error(`Error in getAllLowStockProducts controller: ${error}`);
     res.status(500).json({ message: "Internal server error" });
   }
 };
