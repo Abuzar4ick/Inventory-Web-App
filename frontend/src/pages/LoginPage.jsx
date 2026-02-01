@@ -70,7 +70,6 @@ const LoginPage = () => {
             </div>
           </div>
 
-          {/* КНОПКА КАК В SIGNUP */}
           <button
             type="submit"
             className={`auth-btn ${

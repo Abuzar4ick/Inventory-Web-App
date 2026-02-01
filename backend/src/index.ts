@@ -1,0 +1,31 @@
+import express from "express";
+import cors from "cors";
+import path from "path";
+import cookieParser from "cookie-parser";
+
+import { ENV } from "./config/env";
+
+import userRoutes from "./routes/authRoutes";
+import productRoutes from "./routes/productsRoutes";
+
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(cors({ origin: ENV.FRONTEND_URL }));
+
+app.use("/api/auth", userRoutes);
+app.use("/api/products", productRoutes);
+
+if (ENV.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  app.get("/{*any}", (_, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+  });
+}
+
+app.listen(ENV.PORT, () => console.log(`Server running on port ${ENV.PORT}`));

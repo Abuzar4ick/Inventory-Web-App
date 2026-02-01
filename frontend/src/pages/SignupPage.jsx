@@ -81,7 +81,7 @@ const SignupPage = () => {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Parol..."
+                placeholder="Parol"
                 className="input input-bordered w-full bg-white text-black border-gray-400"
               />
               <button
