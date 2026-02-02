@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { FiLoader } from "react-icons/fi";
+import { FaBoxes } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/useAuthStore";
-import { FiLoader } from "react-icons/fi";
 
 const SignupPage = () => {
-  const [username, setUsername] = useState("");
   const [fullname, setFullname] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const { signup, isSigningUp } = useAuthStore();
-
-  const handleToggleShow = () => setShowPassword(!showPassword);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,86 +24,81 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm">
-        <h2 className="text-2xl font-semibold text-center mb-6 text-gray-900">
-          Ro'yxatdan o'tish
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-600 to-purple-700 px-4">
+      <div className="w-full max-w-sm bg-white rounded-2xl shadow-2xl p-8">
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-6">
+          <div className="w-14 h-14 flex items-center justify-center rounded-full bg-indigo-600 text-white text-2xl mb-2">
+            <FaBoxes />
+          </div>
+          <h1 className="text-xl font-bold text-gray-800">
+            Inventarizatsiya ilovasi
+          </h1>
+          <p className="text-sm text-gray-500">Ro‘yxatdan o‘tish</p>
+        </div>
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          {/* Full Name */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Full name */}
           <div>
-            <label
-              htmlFor="fullname"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              To‘liq ism
-            </label>
+            <label className="text-sm text-gray-600">To‘liq ism</label>
             <input
               type="text"
-              id="fullname"
               value={fullname}
               onChange={(e) => setFullname(e.target.value)}
-              placeholder="To‘liq ism..."
-              className="input input-bordered w-full bg-white text-black border-gray-400"
+              placeholder="Ism Familiya"
+              className="mt-1 w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>
 
           {/* Username */}
           <div>
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Foydalanuvchi nomi
-            </label>
+            <label className="text-sm text-gray-600">Foydalanuvchi nomi</label>
             <input
               type="text"
-              id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Foydalanuvchi nomi..."
-              className="input input-bordered w-full bg-white text-black border-gray-400"
+              placeholder="Masalan: abuzar_01"
+              className="mt-1 w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>
+
           {/* Password */}
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Parol
-            </label>
-            <div className="relative">
+            <label className="text-sm text-gray-600">Parol</label>
+            <div className="relative mt-1">
               <input
-                id="password"
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Parol"
-                className="input input-bordered w-full bg-white text-black border-gray-400"
+                placeholder="Kamida 8 ta belgidan iborat"
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
               />
               <button
                 type="button"
-                onClick={handleToggleShow}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-black text-xl"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-xl"
               >
                 {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
               </button>
             </div>
           </div>
 
+          {/* Button */}
           <button
             type="submit"
-            className={`auth-btn ${
-              isSigningUp ? "cursor-not-allowed opacity-50" : ""
-            }`}
             disabled={isSigningUp}
+            className={`w-full py-2 rounded-lg font-semibold text-white transition
+              ${
+                isSigningUp
+                  ? "bg-indigo-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700"
+              }
+            `}
           >
             {isSigningUp ? (
-              <FiLoader className="w-5 h-5 animate-spin mx-auto" />
+              <FiLoader className="animate-spin mx-auto" />
             ) : (
-              "Ro'yxatdan o'tish"
+              "Ro‘yxatdan o‘tish"
             )}
           </button>
         </form>
