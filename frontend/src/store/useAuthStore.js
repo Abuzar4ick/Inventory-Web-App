@@ -31,7 +31,7 @@ export const useAuthStore = create((set, get) => ({
 
       toast.success("Account created successfully!");
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.error);
     } finally {
       set({ isSigningUp: false });
     }
@@ -46,7 +46,7 @@ export const useAuthStore = create((set, get) => ({
 
       toast.success("Account created successfully!");
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.error);
     } finally {
       set({ isLoggingIn: false });
     }
