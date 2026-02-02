@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({ origin: ENV.FRONTEND_URL }));
+app.use(cors({ origin: ENV.FRONTEND_URL, credentials: true }));
 
 app.use("/api/auth", userRoutes);
 app.use("/api/products", productRoutes);
