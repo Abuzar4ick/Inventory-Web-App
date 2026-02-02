@@ -25,7 +25,6 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-600 to-purple-700 px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-2xl p-8">
-        
         {/* Logo */}
         <div className="flex flex-col items-center mb-6">
           <div className="w-14 h-14 flex items-center justify-center rounded-full bg-indigo-600 text-white text-2xl mb-2">
@@ -34,9 +33,7 @@ const LoginPage = () => {
           <h1 className="text-xl font-bold text-gray-800">
             Inventarizatsiya ilovasi
           </h1>
-          <p className="text-sm text-gray-500">
-            Tizimga kirish
-          </p>
+          <p className="text-sm text-gray-500">Tizimga kirish</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -78,9 +75,11 @@ const LoginPage = () => {
             type="submit"
             disabled={isLoggingIn}
             className={`w-full py-2 rounded-lg font-semibold text-white transition
-              ${isLoggingIn
-                ? "bg-indigo-400 cursor-not-allowed"
-                : "bg-indigo-600 hover:bg-indigo-700"}
+              ${
+                isLoggingIn
+                  ? "bg-indigo-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700"
+              }
             `}
           >
             {isLoggingIn ? (
