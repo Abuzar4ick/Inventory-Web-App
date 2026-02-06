@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FiLoader } from "react-icons/fi";
-import { FaBoxes } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/useAuthStore";
 
-const LoginPage = () => {
+const SignUpPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -23,75 +22,72 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-600 to-purple-700 px-4">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-2xl p-8">
-        {/* Logo */}
-        <div className="flex flex-col items-center mb-6">
-          <div className="w-14 h-14 flex items-center justify-center rounded-full bg-indigo-600 text-white text-2xl mb-2">
-            <FaBoxes />
-          </div>
-          <h1 className="text-xl font-bold text-gray-800">
-            Inventarizatsiya ilovasi
-          </h1>
-          <p className="text-sm text-gray-500">Tizimga kirish</p>
-        </div>
+    <div className="w-full min-h-screen flex items-center justify-center p-4">
+      <div className="card w-full max-w-md">
+        <form
+          onSubmit={handleSubmit}
+          className="p-6 flex flex-col gap-8 text-center"
+        >
+          {/* Title */}
+          <p className="text-3xl font-bold">Hush Kelibsiz</p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Username */}
-          <div>
-            <label className="text-sm text-gray-600">Foydalanuvchi nomi</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Masalan: abuzar_01"
-              className="mt-1 w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            />
-          </div>
+          <p className="text-gray-500 text-md">
+            Davom etish uchun login ma’lumotlaringizni kiriting
+          </p>
 
-          {/* Password */}
-          <div>
-            <label className="text-sm text-gray-600">Parol</label>
-            <div className="relative mt-1">
+          <div className="flex flex-col gap-4 text-start text-lg">
+            {/* Username */}
+            <div>
+              <label className="font-bold text-md">Foydalanuvchi nomi</label>
+              <input
+                type="text"
+                placeholder="Foydalanuvchi nomingizni kiriting"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+
+            {/* Password */}
+            <div className="relative">
+              <label className="font-bold text-md">Parol</label>
               <input
                 type={showPassword ? "text" : "password"}
+                placeholder="Parolingizni kiriting"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Parolingizni kiriting"
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="input input-bordered w-full pr-12"
+                required
               />
-              <button
+
+              {/* Eye icon */}
+              {/* <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-xl"
+                className="absolute right-3 top-1/2 text-xl z-10"
               >
                 {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-              </button>
+              </button> */}
             </div>
-          </div>
 
-          {/* Button */}
-          <button
-            type="submit"
-            disabled={isLoggingIn}
-            className={`w-full py-2 rounded-lg font-semibold text-white transition
-              ${
-                isLoggingIn
-                  ? "bg-indigo-400 cursor-not-allowed"
-                  : "bg-indigo-600 hover:bg-indigo-700"
-              }
-            `}
-          >
-            {isLoggingIn ? (
-              <FiLoader className="animate-spin mx-auto" />
-            ) : (
-              "Kirish"
-            )}
-          </button>
+            {/* Submit */}
+            <button
+              type="submit"
+              className="btn btn-primary text-white w-full"
+              disabled={isLoggingIn}
+            >
+              {isLoggingIn ? (
+                <FiLoader className="animate-spin text-lg" />
+              ) : (
+                "Kirish"
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default SignUpPage;
