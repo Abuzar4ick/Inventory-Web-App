@@ -1,9 +1,13 @@
 import { Outlet } from "react-router-dom";
+// components
+import Navbar from "../components/Navbar";
 
 function RootLayout() {
   return (
-    <div className="min-h-screen bg-white text-black">
-      <header>{/* There will be navbar */}</header>
+    <div className="min-h-screen text-black">
+      <header>
+        <Navbar />
+      </header>
       <main>
         <Outlet />
       </main>

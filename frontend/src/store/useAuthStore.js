@@ -29,7 +29,7 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/signup", data);
       set({ authUser: res.data });
 
-      toast.success("Account created successfully!");
+      toast.success("Hisob muvaffaqiyatli yaratildi!");
     } catch (error) {
       toast.error(error.response.data.error);
     } finally {
@@ -44,7 +44,7 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/login", data);
       set({ authUser: res.data });
 
-      toast.success("Account created successfully!");
+      toast.success("Hisobga muvaffaqiyatli kirdingiz!");
     } catch (error) {
       toast.error(error.response.data.error);
     } finally {
