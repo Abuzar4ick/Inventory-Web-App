@@ -12,7 +12,7 @@ router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 
 // Protected route to check if user is authenticated
-router.post("/check", protectRoute, (req: Request, res: Response) =>
+router.get("/check", protectRoute, (req: Request, res: Response) =>
   res.status(200).json(req.user),
 );
 
