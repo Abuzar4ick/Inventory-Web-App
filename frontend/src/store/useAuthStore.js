@@ -9,8 +9,8 @@ export const useAuthStore = create((set, get) => ({
   isCheckingAuth: false,
 
   checkAuth: async () => {
-    set({ isCheckingAuth: true })
-    
+    set({ isCheckingAuth: true });
+
     try {
       const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
@@ -49,6 +49,17 @@ export const useAuthStore = create((set, get) => ({
       toast.error(error.response.data.error);
     } finally {
       set({ isLoggingIn: false });
+    }
+  },
+
+  logout: async () => {
+    try {
+      await axiosInstance.post("/auth/logout");
+      set({ authUser: null });
+      toast.success("Hisobdan muvaffaqiyatli chiqildi!");
+    } catch (error) {
+      toast.error("Hisobdan chiqishda xatolik yuz berdi");
+      console.log("Logout error:", error);
     }
   },
 }));
