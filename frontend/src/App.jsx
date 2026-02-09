@@ -7,8 +7,11 @@ import RootLayout from "./layouts/RootLayout";
 import AuthLayout from "./layouts/AuthLayout";
 // pages
 import HomePage from "./pages/HomePage";
+import ProductsPage from "./pages/ProductsPage";
+import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignUpPage";
+// component
 import PageLoader from "./components/PageLoader";
 
 function App() {
@@ -29,6 +32,14 @@ function App() {
           index: true,
           element: authUser ? <HomePage /> : <Navigate to={"/auth/login"} />,
         },
+        {
+          path: "products",
+          element: authUser ? <ProductsPage /> : <Navigate to={"/auth/login"} />,
+        },
+        {
+          path: "profile",
+          element: authUser ? <ProfilePage /> : <Navigate to={"/auth/login"} />,
+        }
       ],
     },
     {
