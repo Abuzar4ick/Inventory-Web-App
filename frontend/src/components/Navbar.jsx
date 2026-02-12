@@ -12,16 +12,16 @@ const Navbar = () => {
   const { logout } = useAuthStore();
 
   return (
-    <div className="drawer drawer-end">
+    <div className="drawer drawer-end bg-[#fbfcfd]">
       {/* Toggle */}
       <input id="mobile-menu" type="checkbox" className="drawer-toggle" />
 
       {/* PAGE CONTENT */}
-      <div className="drawer-content">
-        <nav className="navbar border-b border-gray-300 px-4">
+      <div className="drawer-content border-b border-gray-300">
+        <nav className="navbar main-container">
           {/* LEFT SIDE */}
           <div className="flex-1 flex items-center gap-6">
-            <h1 className="text-xl lg:text-2xl font-bold">Inventory App</h1>
+            <h1 className="text-lg lg:text-xl font-bold">Inventory App</h1>
 
             {/* Desktop Links */}
             <div className="hidden lg:flex gap-1.5">

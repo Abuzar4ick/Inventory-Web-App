@@ -1,7 +1,11 @@
+
+import TitleBar from "../components/TitleBar"
+
 function HomePage() {
   return (
-    <div>
-    </div>
+    <>
+      <TitleBar pageTitle={"Boshqaruv paneli"} />
+    </>
   )
 }
 
