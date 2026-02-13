@@ -1,9 +1,10 @@
+import TitleBar from "../components/TitleBar"
 
 const ProductsPage = () => {
   return (
-    <div>
-      Products page
-    </div>
+    <>
+      <TitleBar pageTitle={"Mahsulotlar ro'yxati"} />
+    </>
   )
 }
 
