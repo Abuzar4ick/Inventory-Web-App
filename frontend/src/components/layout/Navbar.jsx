@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useAuthStore } from "../store/useAuthStore";
+import { useAuthStore } from "../../store/useAuthStore";
 // icons
 import { LuLayoutDashboard } from "react-icons/lu";
 import { AiOutlineShoppingCart } from "react-icons/ai";

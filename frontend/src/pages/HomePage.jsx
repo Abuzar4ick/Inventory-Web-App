@@ -1,5 +1,5 @@
 
-import TitleBar from "../components/TitleBar"
+import TitleBar from "../components/layout/TitleBar"
 
 function HomePage() {
   return (
