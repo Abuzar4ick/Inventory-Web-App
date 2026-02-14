@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FiLoader } from "react-icons/fi";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/useAuthStore";

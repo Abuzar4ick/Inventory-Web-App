@@ -1,9 +1,8 @@
-const Modal = ({ children }) => {
+const Modal = ({ children, onClose }) => {
   return (
-    <dialog id="my_modal" className="modal">
-
+    <dialog id="my_modal" className="modal" onClose={onClose}>
       <form method="dialog" className="modal-backdrop">
-        <button className="w-full h-full cursor-default"></button>
+        <button></button>
       </form>
 
       <div className="modal-box relative">
@@ -16,7 +15,7 @@ const Modal = ({ children }) => {
         {children}
       </div>
     </dialog>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;

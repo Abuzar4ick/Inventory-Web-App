@@ -12,7 +12,7 @@ import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignUpPage";
 // component
-import PageLoader from "./components/PageLoader";
+import PageLoader from "./components/common/PageLoader";
 
 function App() {
   const { checkAuth, isCheckingAuth, authUser } = useAuthStore();

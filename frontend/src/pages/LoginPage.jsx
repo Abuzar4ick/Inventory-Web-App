@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FiLoader } from "react-icons/fi";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/useAuthStore";
 
-const SignUpPage = () => {
+const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
 
   const { login, isLoggingIn } = useAuthStore();
 
@@ -90,4 +89,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default LoginPage;
