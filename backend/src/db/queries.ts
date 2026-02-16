@@ -1,5 +1,5 @@
 import { db } from "./index";
-import { eq } from "drizzle-orm";
+import { count, eq, gt, lt, and, or } from "drizzle-orm";
 import { users, products, type NewUser, type NewProduct } from "./schema";
 
 // USER QUERIES
@@ -21,7 +21,7 @@ export const getUserById = async (id: string) => {
       username: true,
       createdAt: true,
       updatedAt: true,
-    }
+    },
   });
 };
 
@@ -71,4 +71,35 @@ export const deleteProduct = async (id: string) => {
     .returning();
 
   return product;
+};
+
+// Get stats of products for a user
+export const getStatsOfProducts = async (userId: string) => {
+  const totalProducts = await db
+    .select({ count: count() })
+    .from(products)
+    .where(eq(products.userId, userId));
+
+  const lowStockProducts = await db
+    .select({ count: count() })
+    .from(products)
+    .where(
+      (eq(products.userId, userId) &&
+        lt(products.quantity, products.min_quantity)) ||
+        eq(products.quantity, products.min_quantity),
+    );
+
+  const weeklyAddedProducts = await db
+    .select({ count: count() })
+    .from(products)
+    .where(
+      eq(products.userId, userId) &&
+        gt(products.createdAt, new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)),
+    );
+
+  return {
+    totalProducts: totalProducts[0].count,
+    lowStockProducts: lowStockProducts[0].count,
+    weeklyAddedProducts: weeklyAddedProducts[0].count,
+  };
 };

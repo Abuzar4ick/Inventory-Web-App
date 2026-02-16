@@ -59,7 +59,9 @@ export const updateProduct = async (req: Request, res: Response) => {
         .json({ error: "Barcha maydonlar to'ldirilishi kerak" });
     }
 
-    const existingProduct = await queries.getProductById(req.params.id as string);
+    const existingProduct = await queries.getProductById(
+      req.params.id as string,
+    );
     if (!existingProduct) {
       return res.status(404).json({ error: "Product not found" });
     }
@@ -68,11 +70,14 @@ export const updateProduct = async (req: Request, res: Response) => {
       return res.status(403).json({ error: "Access denied" });
     }
 
-    const updatedProduct = await queries.updateProduct(req.params.id as string, {
-      name,
-      quantity,
-      min_quantity,
-    });
+    const updatedProduct = await queries.updateProduct(
+      req.params.id as string,
+      {
+        name,
+        quantity,
+        min_quantity,
+      },
+    );
 
     res.status(200).json(updatedProduct);
   } catch (error) {
@@ -84,7 +89,9 @@ export const updateProduct = async (req: Request, res: Response) => {
 // Delete a product
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const existingProduct = await queries.getProductById(req.params.id as string);
+    const existingProduct = await queries.getProductById(
+      req.params.id as string,
+    );
     if (!existingProduct) {
       return res.status(404).json({ error: "Product not found" });
     }
@@ -97,6 +104,17 @@ export const deleteProduct = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
     console.error("Error deleting product:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Get statistics of products (for dashboard page)
+export const getStatsOfProducts = async (req: Request, res: Response) => {
+  try {
+    const stats = await queries.getStatsOfProducts(req.user?.id as string);
+    res.status(200).json(stats);
+  } catch (error) {
+    console.error("Error getting product stats:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
