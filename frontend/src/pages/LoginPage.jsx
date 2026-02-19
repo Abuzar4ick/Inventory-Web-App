@@ -6,7 +6,7 @@ import { useAuthStore } from "../store/useAuthStore";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { login, isLoggingIn } = useAuthStore();
 
