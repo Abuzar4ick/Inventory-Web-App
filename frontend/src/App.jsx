@@ -6,8 +6,8 @@ import { useAuthStore } from "./store/useAuthStore";
 import RootLayout from "./layouts/RootLayout";
 import AuthLayout from "./layouts/AuthLayout";
 // pages
-import HomePage from "./pages/HomePage";
-import ProductsPage from "./pages/ProductsPage";
+import DashboardPage from "./features/dashboard/pages/DashboardPage";
+import ProductsPage from "./features/products/pages/ProductsPage";
 import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignUpPage";
@@ -30,7 +30,7 @@ function App() {
       children: [
         {
           index: true,
-          element: authUser ? <HomePage /> : <Navigate to={"/auth/login"} />,
+          element: authUser ? <DashboardPage /> : <Navigate to={"/auth/login"} />,
         },
         {
           path: "products",

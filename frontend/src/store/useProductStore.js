@@ -4,8 +4,10 @@ import toast from "react-hot-toast";
 
 export const useProductStore = create((set, get) => ({
   products: [],
+  statistics: [],
   isLoading: false,
   isAdding: false,
+  areStatsGetting: false,
 
   fetchProducts: async () => {
     set({ isLoading: true });
@@ -73,6 +75,20 @@ export const useProductStore = create((set, get) => ({
       console.error("Error deleting product:", error);
     } finally {
       set({ isLoading: false });
+    }
+  },
+
+  getProductsStats: async () => {
+    set({ areStatsGetting: true });
+
+    try {
+      const response = await axiosInstance.get("/products/stats");
+      set({ statistics: response.data });
+    } catch (error) {
+      toast.error("Statistikani olishda xatolik yuz berdi");
+      console.error("Error fetching product statistics:", error);
+    } finally {
+      set({ areStatsGetting: false });
     }
   },
 }));
