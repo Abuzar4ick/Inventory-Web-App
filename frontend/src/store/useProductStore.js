@@ -5,21 +5,21 @@ import toast from "react-hot-toast";
 export const useProductStore = create((set, get) => ({
   products: [],
   statistics: [],
-  isLoading: false,
+  areProductsGetting: false,
   isAdding: false,
   areStatsGetting: false,
 
-  fetchProducts: async () => {
-    set({ isLoading: true });
+  getProducts: async () => {
+    set({ areProductsGetting: true });
 
     try {
-      const response = await axiosInstance.get("/products");
+      const response = await axiosInstance.get("/products/my");
       set({ products: response.data });
     } catch (error) {
       toast.error("Mahsulotlarni olishda xatolik yuz berdi");
-      console.error("Error fetching products:", error);
+      console.error("Error getting products:", error);
     } finally {
-      set({ isLoading: false });
+      set({ areProductsGetting: false });
     }
   },
 
