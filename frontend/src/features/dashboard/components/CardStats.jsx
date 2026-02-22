@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useProductStore } from "../../../store/useProductStore"
-import CardStatsSkeleton from "./CardStatsSkeleton";
+import CardStatsSkeleton from "./skeletons/CardStatsSkeleton";
 // icons
 import { FaBoxOpen } from "react-icons/fa6";
 import { IoWarningOutline } from "react-icons/io5";
@@ -26,7 +26,7 @@ const CardStats = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Card 1 */}
-          <div className="bg-white rounded-lg shadow-sm p-6 flex justify-between items-start">
+          <div className="bg-white rounded-xl shadow-sm p-6 flex justify-between items-start">
             <div className="flex flex-col gap-3">
               <p className="text-gray-500 text-sm font-bold">
                 Jami mahsulotlar
@@ -44,7 +44,7 @@ const CardStats = () => {
           </div>
 
           {/* Card 2 */}
-          <div className="bg-white rounded-lg shadow-sm p-6 flex justify-between items-start">
+          <div className="bg-white rounded-xl shadow-sm p-6 flex justify-between items-start">
             <div className="flex flex-col gap-3">
               <p className="text-gray-500 text-sm font-bold">
                 Kam qolgan mahsulotlar
@@ -62,7 +62,7 @@ const CardStats = () => {
           </div>
 
           {/* Card 3 */}
-          <div className="bg-white rounded-lg shadow-sm p-6 flex justify-between items-start">
+          <div className="bg-white rounded-xl shadow-sm p-6 flex justify-between items-start">
             <div className="flex flex-col gap-3">
               <p className="text-gray-500 text-sm font-bold">
                 Yangi qo'shilganlar

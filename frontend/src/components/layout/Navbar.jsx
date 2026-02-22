@@ -17,7 +17,7 @@ const Navbar = () => {
       <input id="mobile-menu" type="checkbox" className="drawer-toggle" />
 
       {/* PAGE CONTENT */}
-      <div className="drawer-content border-b border-gray-300">
+      <div className="drawer-content border-b border-gray-200">
         <nav className="navbar main-container">
           {/* LEFT SIDE */}
           <div className="flex-1 flex items-center gap-6">
