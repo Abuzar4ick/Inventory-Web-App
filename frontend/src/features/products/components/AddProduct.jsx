@@ -46,7 +46,7 @@ const AddProduct = () => {
               value={data.name}
               onChange={(e) => setData({ ...data, name: e.target.value })}
               className="input input-bordered w-full bg-[#f6f7f9]"
-
+              required
             />
           </div>
 
@@ -70,6 +70,7 @@ const AddProduct = () => {
               value={data.min_quantity}
               onChange={(e) => setData({ ...data, min_quantity: e.target.value })}
               className="input input-bordered w-full pr-12 bg-[#f6f7f9]"
+              required
             />
           </div>
         </div>
