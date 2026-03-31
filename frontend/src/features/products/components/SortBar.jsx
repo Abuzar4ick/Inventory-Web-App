@@ -34,7 +34,7 @@ const SortBar = ({ active, setActive }) => {
             ${
               active === "all"
                 ? "bg-base-100 shadow-none hover:bg-base-100"
-                : "bg-transparent hover:bg-transparent"
+                : "bg-transparent hover:bg-transparent text-[#868b98]"
             }
           `}
           onClick={() => setActive("all")}
@@ -47,7 +47,7 @@ const SortBar = ({ active, setActive }) => {
             ${
               active === "few"
                 ? "bg-base-100 shadow-none hover:bg-base-100"
-                : "bg-transparent hover:bg-transparent"
+                : "bg-transparent hover:bg-transparent text-[#868b98]"
             }
           `}
           onClick={() => setActive("few")}
