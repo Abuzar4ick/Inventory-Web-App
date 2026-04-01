@@ -3,14 +3,19 @@ import { useProductStore } from "../../../store/useProductStore";
 // components
 import SortBar from "./SortBar";
 import ProductsTableSkeleton from "./ProductsTableSkeleton";
+import UpdateProduct from "./modal-forms/UpdateProduct";
+import DeleteProduct from "./modal-forms/DeleteProduct";
+import { UpdateModal, DeleteModal } from "../../../components/ui/Modals";
 // icons
 import { GoPencil } from "react-icons/go";
 import { FiTrash2 } from "react-icons/fi";
 
 const ProductsTable = () => {
   const [active, setActive] = useState("all");
+  const [resetKey, setResetKey] = useState(0);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const { products, getProducts, areProductsGetting } = useProductStore();
+  const { products, getProducts, areProductsGetting, isDeleting } = useProductStore();
 
   useEffect(() => {
     getProducts();
@@ -89,10 +94,22 @@ const ProductsTable = () => {
                         </td>
 
                         <td className="flex justify-end gap-2">
-                          <button className="btn btn-sm bg-[#f6f7f9]">
+                          <button
+                            onClick={() => {
+                              setSelectedProduct(product)
+                              document.getElementById("update_modal").showModal()
+                            }}
+                            className="btn btn-sm bg-[#f6f7f9]"
+                          >
                             <GoPencil size={16} /> Tahrirlash
                           </button>
-                          <button className="btn btn-sm btn-outline btn-error">
+                          <button
+                            className="btn btn-sm btn-outline btn-error"
+                            onClick={() => {
+                              setSelectedProduct(product);
+                              document.getElementById("delete_modal").showModal();
+                            }}
+                          >
                             <FiTrash2 size={16} /> O‘chirish
                           </button>
                         </td>
@@ -105,6 +122,35 @@ const ProductsTable = () => {
           </table>
         </div>
       </div>
+
+      <UpdateModal
+        onClose={() => {
+          setResetKey((prev) => prev + 1);
+          setSelectedProduct(null);
+        }}
+      >
+        {selectedProduct && (
+          <UpdateProduct
+            key={resetKey}
+            product={selectedProduct}
+          />
+        )}
+      </UpdateModal>
+
+      <DeleteModal
+        onClose={() => {
+          setResetKey((prev) => prev + 1)
+          setSelectedProduct(null)
+        }}
+      >
+        {selectedProduct && (
+          <DeleteProduct
+            key={resetKey}
+            selectedProduct={selectedProduct}
+            setSelectedProduct={setSelectedProduct}
+            isDeleting={isDeleting} />
+        )}
+      </DeleteModal>
     </div>
   );
 };

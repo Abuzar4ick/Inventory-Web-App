@@ -1,7 +1,7 @@
 import { useState } from "react";
 // components
-import AddProduct from "../../features/products/components/AddProduct";
-import Modal from "../ui/Modal";
+import { AddModal } from "../ui/Modals";
+import AddProduct from "../../features/products/components/modal-forms/AddProduct";
 // icon
 import { FiPlus } from "react-icons/fi";
 
@@ -13,13 +13,13 @@ const TitleBar = ({ pageTitle }) => {
 
       <h1 className="text-2xl font-bold">{pageTitle}</h1>
 
-      <button className="btn btn-primary" onClick={() => document.getElementById('my_modal').showModal()}>
+      <button className="btn btn-primary" onClick={() => document.getElementById('add_modal').showModal()}>
         <FiPlus size={16} /> Mahsulot qo‘shish
       </button>
 
-      <Modal onClose={() => setResetKey(prev => prev + 1)}>
+      <AddModal onClose={() => setResetKey(prev => prev + 1)}>
         <AddProduct key={resetKey} />
-      </Modal>
+      </AddModal>
     </div>
   )
 }

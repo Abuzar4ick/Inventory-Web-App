@@ -8,6 +8,9 @@ export const useProductStore = create((set, get) => ({
   areProductsGetting: false,
   isAdding: false,
   areStatsGetting: false,
+  isUpdating: false,
+  isProductGetting: false,
+  isDeleting: false,
 
   getProducts: async () => {
     set({ areProductsGetting: true });
@@ -31,7 +34,7 @@ export const useProductStore = create((set, get) => ({
       set((state) => ({ products: [...state.products, response.data] }));
 
       toast.success("Mahsulot muvaffaqiyatli qo‘shildi");
-      document.getElementById("my_modal").close();
+      document.getElementById("add_modal").close();
     } catch (error) {
       toast.error("Mahsulot qo‘shishda xatolik yuz berdi");
       console.error("Error adding product:", error);
@@ -41,7 +44,7 @@ export const useProductStore = create((set, get) => ({
   },
 
   updateProduct: async (id, updatedData) => {
-    set({ isLoading: true });
+    set({ isUpdating: true });
 
     try {
       const response = await axiosInstance.put(`/products/${id}`, updatedData);
@@ -56,12 +59,12 @@ export const useProductStore = create((set, get) => ({
       toast.error("Mahsulotni yangilashda xatolik yuz berdi");
       console.error("Error updating product:", error);
     } finally {
-      set({ isLoading: false });
+      set({ isUpdating: false });
     }
   },
 
   deleteProduct: async (id) => {
-    set({ isLoading: true });
+    set({ isDeleting: true });
 
     try {
       await axiosInstance.delete(`/products/${id}`);
@@ -74,7 +77,7 @@ export const useProductStore = create((set, get) => ({
       toast.error("Mahsulotni o‘chirishda xatolik yuz berdi");
       console.error("Error deleting product:", error);
     } finally {
-      set({ isLoading: false });
+      set({ isDeleting: false });
     }
   },
 
