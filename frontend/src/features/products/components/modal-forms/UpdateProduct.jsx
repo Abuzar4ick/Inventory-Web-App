@@ -1,16 +1,28 @@
-import { useState } from "react";
-import { useProductStore } from "../../../store/useProductStore"
+import { useEffect, useState } from "react";
+import { useProductStore } from "../../../../store/useProductStore";
+// icons
 import { FiLoader } from "react-icons/fi";
+// toast
 import toast from "react-hot-toast";
 
-const AddProduct = () => {
-  const { addProduct, isAdding: isLoading } = useProductStore();
-
+const UpdateProduct = ({ product }) => {
+  const { updateProduct, isUpdating: isLoading } = useProductStore();
+  
   const [data, setData] = useState({
-    name: '',
-    quantity: '',
-    min_quantity: ''
-  })
+    name: "",
+    quantity: "",
+    min_quantity: "",
+  });
+
+  useEffect(() => {
+    if (product) {
+      setData({
+        name: product.name,
+        quantity: product.quantity,
+        min_quantity: product.min_quantity,
+      });
+    }
+  }, [product]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,8 +34,10 @@ const AddProduct = () => {
     }
 
     // Create a new product object with the form data
-    addProduct(data);
-  }
+    updateProduct(product.id, data).then(() => {
+      document.getElementById("update_modal").close();
+    });
+  };
 
   return (
     <form
@@ -31,9 +45,11 @@ const AddProduct = () => {
       className="py-2 flex flex-col gap-8 text-center"
     >
       <div className="text-start flex flex-col gap-2">
-        <h1 className="font-bold text-xl">Mahsulot qo'shish</h1>
+        <h1 className="font-bold text-xl">Mahsulotni tahrirlash</h1>
 
-        <p className="text-[#a2a3a4] text-sm">Yangi mahsulot ma'lumotlarini kiriting</p>
+        <p className="text-[#a2a3a4] text-sm">
+          Mahsulot ma'lumotlarini o'zgartiring
+        </p>
       </div>
 
       <div className="flex flex-col gap-8 text-start text-lg">
@@ -56,7 +72,7 @@ const AddProduct = () => {
               type="number"
               placeholder="Joriy miqdorni kiriting"
               value={data.quantity}
-              onChange={(e) => setData({ ...data, quantity: e.target.value })}
+              onChange={(e) => setData({ ...data, quantity: Number(e.target.value) })}
               className="input input-bordered w-full pr-12 bg-[#f6f7f9]"
               required
             />
@@ -68,7 +84,9 @@ const AddProduct = () => {
               type="number"
               placeholder="Minimal miqdorni kiriting"
               value={data.min_quantity}
-              onChange={(e) => setData({ ...data, min_quantity: e.target.value })}
+              onChange={(e) =>
+                setData({ ...data, min_quantity: Number(e.target.value) })
+              }
               className="input input-bordered w-full pr-12 bg-[#f6f7f9]"
               required
             />
@@ -80,7 +98,7 @@ const AddProduct = () => {
           <button
             type="button"
             className="btn"
-            onClick={() => document.getElementById("my_modal").close()}
+            onClick={() => document.getElementById("update_modal").close()}
           >
             Bekor qilish
           </button>
@@ -90,12 +108,16 @@ const AddProduct = () => {
             className="btn btn-primary text-white"
             disabled={isLoading}
           >
-            {isLoading ? <FiLoader className="animate-spin text-lg" /> : "Saqlash"}
+            {isLoading ? (
+              <FiLoader className="animate-spin text-lg" />
+            ) : (
+              "Saqlash"
+            )}
           </button>
         </div>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default AddProduct
+export default UpdateProduct;
