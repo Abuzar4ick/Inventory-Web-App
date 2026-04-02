@@ -118,3 +118,21 @@ export const getStatsOfProducts = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+// Search products by name
+export const searchProducts = async (req: Request, res: Response) => {
+  try {
+    const { q } = req.query;
+
+    if (!q) return res.status(400).json({ error: "Search query is required" });
+
+    const products = await queries.searchProductsByName(
+      req.user?.id as string,
+      q as string,
+    );
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error searching products:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
