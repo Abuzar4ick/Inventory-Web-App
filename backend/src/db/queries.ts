@@ -1,5 +1,5 @@
 import { db } from "./index";
-import { count, eq, gt, lt, and, or } from "drizzle-orm";
+import { count, eq, gt, lt, and, or, ilike, sql } from "drizzle-orm";
 import { users, products, type NewUser, type NewProduct } from "./schema";
 
 // USER QUERIES
@@ -102,4 +102,15 @@ export const getStatsOfProducts = async (userId: string) => {
     lowStockProducts: lowStockProducts[0].count,
     weeklyAddedProducts: weeklyAddedProducts[0].count,
   };
+};
+
+// Search products by name for a user
+export const searchProductsByName = async (userId: string, name: string) => {
+  return db.query.products.findMany({
+    where: and(
+      eq(products.userId, userId),
+      sql`replace(lower(${products.name}), ' ', '') like ${`%${name.toLowerCase().replace(/\s/g, "")}%`}`,
+    ),
+    orderBy: (products, { desc }) => [desc(products.createdAt)],
+  });
 };
