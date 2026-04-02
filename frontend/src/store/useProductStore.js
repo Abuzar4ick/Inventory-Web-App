@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 
 export const useProductStore = create((set, get) => ({
   products: [],
+  allProducts: [],
   statistics: [],
   areProductsGetting: false,
   isAdding: false,
@@ -17,7 +18,7 @@ export const useProductStore = create((set, get) => ({
 
     try {
       const response = await axiosInstance.get("/products/my");
-      set({ products: response.data });
+      set({ products: response.data, allProducts: response.data });
     } catch (error) {
       toast.error("Mahsulotlarni olishda xatolik yuz berdi");
       console.error("Error getting products:", error);
@@ -31,7 +32,10 @@ export const useProductStore = create((set, get) => ({
 
     try {
       const response = await axiosInstance.post("/products", productData);
-      set((state) => ({ products: [...state.products, response.data] }));
+      set((state) => ({
+        products: [...state.products, response.data],
+        allProducts: [...state.allProducts, response.data],
+      }));
 
       toast.success("Mahsulot muvaffaqiyatli qo‘shildi");
       document.getElementById("add_modal").close();
@@ -52,6 +56,9 @@ export const useProductStore = create((set, get) => ({
         products: state.products.map((product) =>
           product.id === id ? response.data : product,
         ),
+        allProducts: state.allProducts.map((product) =>
+          product.id === id ? response.data : product,
+        ),
       }));
 
       toast.success("Mahsulot muvaffaqiyatli yangilandi");
@@ -70,6 +77,7 @@ export const useProductStore = create((set, get) => ({
       await axiosInstance.delete(`/products/${id}`);
       set((state) => ({
         products: state.products.filter((product) => product.id !== id),
+        allProducts: state.allProducts.filter((product) => product.id !== id),
       }));
 
       toast.success("Mahsulot muvaffaqiyatli o‘chirildi");
@@ -94,4 +102,22 @@ export const useProductStore = create((set, get) => ({
       set({ areStatsGetting: false });
     }
   },
+
+  searchProducts: async (query) => {
+    set({ areProductsGetting: true });
+
+    try {
+      const filteredProducts = get().allProducts.filter((p) =>
+        p.name.toLowerCase().includes(query.toLowerCase()),
+      );
+      set({ products: filteredProducts });
+    } catch (error) {
+      toast.error("Mahsulotlarni qidirishda xatolik yuz berdi");
+      console.error("Error searching products:", error);
+    } finally {
+      set({ areProductsGetting: false });
+    }
+  },
+
+  setProducts: (products) => set({ products }),
 }));

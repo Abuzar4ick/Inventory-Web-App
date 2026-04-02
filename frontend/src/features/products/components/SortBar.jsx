@@ -1,4 +1,22 @@
+import { useEffect, useState } from "react";
+import { useProductStore } from "@/store/useProductStore";
+
 const SortBar = ({ active, setActive }) => {
+  const [query, setQuery] = useState("");
+
+  const { searchProducts, allProducts, setProducts } = useProductStore();
+
+  useEffect(() => {
+  const timeout = setTimeout(() => {
+    if (!query.trim()) {
+      setProducts(allProducts); // <-- here we reset to all products if the query is empty
+      return;
+    }
+    searchProducts(query);
+  }, 400);
+
+  return () => clearTimeout(timeout);
+}, [query, allProducts, searchProducts, setProducts]);
   return (
     <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
       {/* Search input */}
@@ -24,6 +42,7 @@ const SortBar = ({ active, setActive }) => {
           className="w-full h-8"
           required
           placeholder="Mahsulot qidirish..."
+          onChange={e => setQuery(e.target.value)}
         />
       </label>
 
@@ -31,10 +50,9 @@ const SortBar = ({ active, setActive }) => {
       <div className="join bg-[#f3f4f6] p-1 rounded-xl w-full sm:w-auto">
         <button
           className={`join-item btn h-8 rounded-xl border-0 flex-1 sm:flex-none
-            ${
-              active === "all"
-                ? "bg-base-100 shadow-none hover:bg-base-100"
-                : "bg-transparent hover:bg-transparent text-[#868b98]"
+            ${active === "all"
+              ? "bg-base-100 shadow-none hover:bg-base-100"
+              : "bg-transparent hover:bg-transparent text-[#868b98]"
             }
           `}
           onClick={() => setActive("all")}
@@ -44,10 +62,9 @@ const SortBar = ({ active, setActive }) => {
 
         <button
           className={`join-item btn h-8 rounded-xl border-0 flex-1 sm:flex-none
-            ${
-              active === "few"
-                ? "bg-base-100 shadow-none hover:bg-base-100"
-                : "bg-transparent hover:bg-transparent text-[#868b98]"
+            ${active === "few"
+              ? "bg-base-100 shadow-none hover:bg-base-100"
+              : "bg-transparent hover:bg-transparent text-[#868b98]"
             }
           `}
           onClick={() => setActive("few")}
