@@ -7,6 +7,7 @@ import { MdLogout } from "react-icons/md";
 import { FiUser } from "react-icons/fi";
 import { FiMenu } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
+import { FiDollarSign } from "react-icons/fi";
 
 const Navbar = () => {
   const { logout } = useAuthStore();
@@ -51,6 +52,20 @@ const Navbar = () => {
               >
                 <AiOutlineShoppingCart size={20} />
                 Mahsulotlar
+              </NavLink>
+
+              <NavLink
+                to="/debtors"
+                className={({ isActive }) =>
+                  `btn btn-ghost flex gap-2 ${
+                    isActive
+                      ? "btn-soft btn-primary"
+                      : "text-[#868b98] hover:text-black"
+                  }`
+                }
+              >
+                <FiDollarSign size={20} />
+                Qarzlar
               </NavLink>
             </div>
           </div>
