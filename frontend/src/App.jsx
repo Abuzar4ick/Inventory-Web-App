@@ -11,6 +11,7 @@ import ProductsPage from "./features/products/pages/ProductsPage";
 import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignUpPage";
+import DebtorsPage from "./features/debtors/pages/DebtorsPage";
 // component
 import PageLoader from "./components/common/PageLoader";
 
@@ -39,6 +40,10 @@ function App() {
         {
           path: "profile",
           element: authUser ? <ProfilePage /> : <Navigate to={"/auth/login"} />,
+        },
+        {
+          path: "debtors",
+          element: authUser ? <DebtorsPage /> : <Navigate to={"/auth/login"} />,
         }
       ],
     },
