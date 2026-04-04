@@ -172,12 +172,19 @@ export const deleteDebtor = async (id: string) => {
 
 // Get stats of debtors for a user
 export const getStatsOfDebtors = async (userId: string) => {
+  // get all amount of money owed by debtors (not paid yet)
+  const totalAmountOwed = await db
+    .select({ total: sql`sum(${debtors.money_amount})` })
+    .from(debtors)
+    .where(and(eq(debtors.userId, userId), eq(debtors.status, "pending")));
+
   const totalDebtors = await db
     .select({ count: count() })
     .from(debtors)
     .where(and(eq(debtors.userId, userId), eq(debtors.status, "pending")));
 
   return {
+    totalAmountOwed: totalAmountOwed[0].total,
     totalDebtors: totalDebtors[0].count,
   };
 };
