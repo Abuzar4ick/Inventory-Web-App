@@ -28,12 +28,35 @@ export const products = pgTable("products", {
     .$onUpdate(() => new Date()),
 });
 
+export const debtors = pgTable("debtors", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  debtor_name: text("debtor_name").notNull(),
+  product_name: text("product_name").notNull(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  date: text("date").notNull(),
+  description: text("description"),
+  quantity: integer("quantity").notNull().default(1),
+  money_amount: integer("money_amount").notNull().default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
 export const usersRelations = relations(users, ({ many }) => ({
   products: many(products),
+  debtors: many(debtors),
 }));
 
 export const productsRelations = relations(products, ({ one }) => ({
   user: one(users, { fields: [products.userId], references: [users.id] }), // one product → one user
+}));
+
+export const debtorsRelations = relations(debtors, ({ one }) => ({
+  user: one(users, { fields: [debtors.userId], references: [users.id] }), // one debtor → one user
 }));
 
 // Type inference for relations
@@ -44,3 +67,6 @@ export type UserWithoutPassword = Omit<User, "password">;
 
 export type Product = typeof products.$inferSelect;
 export type NewProduct = typeof products.$inferInsert;
+
+export type Debtor = typeof debtors.$inferSelect;
+export type NewDebtor = typeof debtors.$inferInsert;

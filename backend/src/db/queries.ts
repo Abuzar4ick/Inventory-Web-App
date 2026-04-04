@@ -1,6 +1,13 @@
 import { db } from "./index";
-import { count, eq, gt, lt, and, or, ilike, sql } from "drizzle-orm";
-import { users, products, type NewUser, type NewProduct } from "./schema";
+import { count, eq, gt, lt, and, sql } from "drizzle-orm";
+import {
+  users,
+  products,
+  debtors,
+  type NewUser,
+  type NewProduct,
+  type NewDebtor,
+} from "./schema";
 
 // USER QUERIES
 export const createUser = async (data: NewUser) => {
@@ -113,4 +120,52 @@ export const searchProductsByName = async (userId: string, name: string) => {
     ),
     orderBy: (products, { desc }) => [desc(products.createdAt)],
   });
+};
+
+// DEBTOR QUERIES
+export const createDebtor = async (data: NewDebtor) => {
+  const [debtor] = await db.insert(debtors).values(data).returning();
+  return debtor;
+};
+
+export const getDebtorsByUserId = async (userId: string) => {
+  return db.query.debtors.findMany({
+    where: eq(debtors.userId, userId),
+    orderBy: (debtors, { desc }) => [desc(debtors.createdAt)],
+  });
+};
+
+export const getDebtorById = async (id: string) => {
+  return db.query.debtors.findFirst({
+    where: eq(debtors.id, id),
+  });
+};
+
+export const updateDebtor = async (id: string, data: Partial<NewDebtor>) => {
+  const existingDebtor = await getDebtorById(id);
+  if (!existingDebtor) {
+    throw new Error(`Debtor with id ${id} not found`);
+  }
+
+  const [debtor] = await db
+    .update(debtors)
+    .set(data)
+    .where(eq(debtors.id, id))
+    .returning();
+
+  return debtor;
+};
+
+export const deleteDebtor = async (id: string) => {
+  const existingDebtor = await getDebtorById(id);
+  if (!existingDebtor) {
+    throw new Error(`Debtor with id ${id} not found`);
+  }
+
+  const [debtor] = await db
+    .delete(debtors)
+    .where(eq(debtors.id, id))
+    .returning();
+
+  return debtor;
 };
