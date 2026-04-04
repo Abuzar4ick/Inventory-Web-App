@@ -1,5 +1,8 @@
-import { pgTable, text, timestamp, uuid, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid, integer, pgEnum } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+
+// Enum for debtor status
+export const debtorStatusEnum = pgEnum("status", ["pending", "paid"]);
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(), // clerkId
@@ -39,6 +42,7 @@ export const debtors = pgTable("debtors", {
   description: text("description"),
   quantity: integer("quantity").notNull().default(1),
   money_amount: integer("money_amount").notNull().default(0),
+  status: debtorStatusEnum("status").notNull().default("pending"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" })
     .notNull()

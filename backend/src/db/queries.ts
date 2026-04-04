@@ -169,3 +169,15 @@ export const deleteDebtor = async (id: string) => {
 
   return debtor;
 };
+
+// Get stats of debtors for a user
+export const getStatsOfDebtors = async (userId: string) => {
+  const totalDebtors = await db
+    .select({ count: count() })
+    .from(debtors)
+    .where(and(eq(debtors.userId, userId), eq(debtors.status, "pending")));
+
+  return {
+    totalDebtors: totalDebtors[0].count,
+  };
+};
