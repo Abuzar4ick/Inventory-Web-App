@@ -125,3 +125,14 @@ export const deleteDebtor = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+// Get stats of debtors for a user
+export const getStatsOfDebtors = async (req: Request, res: Response) => {
+  try {
+    const stats = await queries.getStatsOfDebtors(req.user?.id);
+    res.json(stats);
+  } catch (error) {
+    console.error("Error fetching debtor stats:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
