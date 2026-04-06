@@ -57,7 +57,7 @@ const AddProduct = () => {
               placeholder="Joriy miqdorni kiriting"
               value={data.quantity}
               onChange={(e) => setData({ ...data, quantity: e.target.value })}
-              className="input input-bordered w-full pr-12 bg-[#f6f7f9]"
+              className="input input-bordered w-full bg-[#f6f7f9]"
               required
             />
           </div>
@@ -69,7 +69,7 @@ const AddProduct = () => {
               placeholder="Minimal miqdorni kiriting"
               value={data.min_quantity}
               onChange={(e) => setData({ ...data, min_quantity: e.target.value })}
-              className="input input-bordered w-full pr-12 bg-[#f6f7f9]"
+              className="input input-bordered w-full bg-[#f6f7f9]"
               required
             />
           </div>

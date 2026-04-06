@@ -1,8 +1,9 @@
+import TitleBar from "@/components/layout/TitleBar"
 
 const DebtorsPage = () => {
   return (
     <div className="page-container">
-      Qarzlar sahifasi
+      <TitleBar pageTitle="Qarzlar" modalBtnType="add_debtor" />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useProductStore } from "@/store/useProductStore"
-import { useDebtorStore } from "@/store/useDebtorStore";
+import { useDebtStore } from "@/store/useDebtStore";
 import CardStatsSkeleton from "./skeletons/CardStatsSkeleton";
 // icons
 import { FaBoxOpen } from "react-icons/fa6";
@@ -10,7 +10,7 @@ import { FiDollarSign } from "react-icons/fi";
 
 const CardStats = () => {
   const { statistics, areStatsGetting, getProductsStats } = useProductStore();
-  const { getStatistics, statistics: debtorStatistics } = useDebtorStore();
+  const { getStatistics, statistics: debtorStatistics } = useDebtStore();
 
   useEffect(() => {
     getProductsStats();

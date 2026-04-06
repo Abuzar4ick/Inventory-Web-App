@@ -4,7 +4,7 @@ import ProductsTable from "../components/ProductsTable";
 const ProductsPage = () => {
   return (
     <div className="page-container">
-      <TitleBar pageTitle={"Mahsulotlar ro'yxati"} />
+      <TitleBar pageTitle={"Mahsulotlar ro'yxati"} modalBtnType="add_product" />
       <ProductsTable />
     </div>
   )
