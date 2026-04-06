@@ -1,30 +1,34 @@
 import { useEffect } from "react";
-import { useProductStore } from "../../../store/useProductStore"
+import { useProductStore } from "@/store/useProductStore"
+import { useDebtorStore } from "@/store/useDebtorStore";
 import CardStatsSkeleton from "./skeletons/CardStatsSkeleton";
 // icons
 import { FaBoxOpen } from "react-icons/fa6";
 import { IoWarningOutline } from "react-icons/io5";
 import { TfiStatsUp } from "react-icons/tfi";
+import { FiDollarSign } from "react-icons/fi";
 
 const CardStats = () => {
   const { statistics, areStatsGetting, getProductsStats } = useProductStore();
+  const { getStatistics, statistics: debtorStatistics } = useDebtorStore();
 
   useEffect(() => {
     getProductsStats();
+    getStatistics();
   }, [])
 
   return (
     <div className="main-container">
       {areStatsGetting ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((item) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map((item) => (
             <CardStatsSkeleton key={item} />
           ))}
 
         </div>
       ) : (
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Card 1 */}
           <div className="bg-white rounded-xl shadow-sm p-6 flex justify-between items-start">
             <div className="flex flex-col gap-3">
@@ -76,6 +80,24 @@ const CardStats = () => {
             </div>
             <div className="text-success text-2xl">
               <TfiStatsUp />
+            </div>
+          </div>
+
+          {/* Card 4 */}
+          <div className="bg-white rounded-xl shadow-sm p-6 flex justify-between items-start">
+            <div className="flex flex-col gap-3">
+              <p className="text-gray-500 text-sm font-bold">
+                Qarzlar soni
+              </p>
+              <h3 className="text-3xl font-bold text-gray-900">
+                {debtorStatistics.totalDebtors}
+              </h3>
+              <p className="text-gray-400 text-xs">
+                To'lanmagan qarzlar
+              </p>
+            </div>
+            <div className="text-orange-400 text-2xl">
+              <FiDollarSign />
             </div>
           </div>
         </div>
