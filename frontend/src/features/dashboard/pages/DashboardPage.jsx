@@ -5,7 +5,7 @@ import LawProductsList from "../components/LawProductsList";
 function DashboardPage() {
   return (
     <div className="page-container">
-      <TitleBar pageTitle={"Boshqaruv paneli"} />
+      <TitleBar pageTitle={"Boshqaruv paneli"} modalBtnType="add_product" />
       <CardStats />
       <LawProductsList />
     </div>
