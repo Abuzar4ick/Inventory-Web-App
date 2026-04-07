@@ -29,10 +29,9 @@ const Navbar = () => {
               <NavLink
                 to="/"
                 className={({ isActive }) =>
-                  `btn btn-ghost flex gap-2 ${
-                    isActive
-                      ? "btn-soft btn-primary"
-                      : "text-[#868b98] hover:text-black"
+                  `btn btn-ghost flex gap-2 ${isActive
+                    ? "btn-soft btn-primary"
+                    : "text-[#868b98] hover:text-black"
                   }`
                 }
               >
@@ -43,10 +42,9 @@ const Navbar = () => {
               <NavLink
                 to="/products"
                 className={({ isActive }) =>
-                  `btn btn-ghost flex gap-2 ${
-                    isActive
-                      ? "btn-soft btn-primary"
-                      : "text-[#868b98] hover:text-black"
+                  `btn btn-ghost flex gap-2 ${isActive
+                    ? "btn-soft btn-primary"
+                    : "text-[#868b98] hover:text-black"
                   }`
                 }
               >
@@ -57,10 +55,9 @@ const Navbar = () => {
               <NavLink
                 to="/debtors"
                 className={({ isActive }) =>
-                  `btn btn-ghost flex gap-2 ${
-                    isActive
-                      ? "btn-soft btn-primary"
-                      : "text-[#868b98] hover:text-black"
+                  `btn btn-ghost flex gap-2 ${isActive
+                    ? "btn-soft btn-primary"
+                    : "text-[#868b98] hover:text-black"
                   }`
                 }
               >
@@ -146,10 +143,9 @@ const Navbar = () => {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `btn btn-ghost justify-start flex gap-2 ${
-                  isActive
-                    ? "btn-soft btn-primary"
-                    : "text-[#868b98] hover:text-black"
+                `btn btn-ghost justify-start flex gap-2 ${isActive
+                  ? "btn-soft btn-primary"
+                  : "text-[#868b98] hover:text-black"
                 }`
               }
             >
@@ -162,15 +158,29 @@ const Navbar = () => {
             <NavLink
               to="/products"
               className={({ isActive }) =>
-                `btn btn-ghost justify-start flex gap-2 ${
-                  isActive
-                    ? "btn-soft btn-primary"
-                    : "text-[#868b98] hover:text-black"
+                `btn btn-ghost justify-start flex gap-2 ${isActive
+                  ? "btn-soft btn-primary"
+                  : "text-[#868b98] hover:text-black"
                 }`
               }
             >
               <AiOutlineShoppingCart size={20} />
               Mahsulotlar
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/debtors"
+              className={({ isActive }) =>
+                `btn btn-ghost justify-start flex gap-2 ${isActive
+                  ? "btn-soft btn-primary"
+                  : "text-[#868b98] hover:text-black"
+                }`
+              }
+            >
+              <FiDollarSign size={20} />
+              Qarzlar
             </NavLink>
           </li>
         </ul>
