@@ -6,8 +6,10 @@ const TotalDebts = () => {
   const { areStatisticsGetting, statistics, getStatistics } = useDebtStore();
 
   useEffect(() => {
-    getStatistics();
-  }, []);
+    if (!statistics) {
+      getStatistics();
+    }
+  }, [statistics, getStatistics]);
 
   return (
     <div className="main-container bg-white border border-gray-200 rounded-2xl p-6 flex items-start justify-between relative overflow-hidden">
