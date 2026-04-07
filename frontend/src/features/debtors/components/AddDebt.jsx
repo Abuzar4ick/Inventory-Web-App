@@ -106,7 +106,7 @@ const AddDebt = () => {
             <p className="text-gray-500 text-sm">Jami summa</p>
             <h2 className="text-2xl font-bold">
               {data.quantity && data.money_amount
-                ? `${(Number(data.quantity) * Number(data.money_amount)).toLocaleString()} UZS`
+                ? `${(Number(data.quantity) * Number(data.money_amount)).toLocaleString("en-US")} UZS`
                 : "0 UZS"}
             </h2>
           </div>
