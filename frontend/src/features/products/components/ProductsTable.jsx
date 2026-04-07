@@ -18,8 +18,10 @@ const ProductsTable = () => {
   const { products, getProducts, areProductsGetting, isDeleting } = useProductStore();
 
   useEffect(() => {
-    getProducts();
-  }, [getProducts]);
+    if (!products) {
+      getProducts();
+    }
+  }, [products, getProducts]);
 
   // function to determine product status and badge color
   const getStatus = (product) => {
