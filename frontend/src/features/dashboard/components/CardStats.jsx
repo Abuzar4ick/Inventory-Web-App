@@ -13,9 +13,14 @@ const CardStats = () => {
   const { getStatistics, statistics: debtorStatistics } = useDebtStore();
 
   useEffect(() => {
-    getProductsStats();
-    getStatistics();
-  }, [])
+    if (!statistics || statistics.length === 0) {
+      getProductsStats();
+    }
+
+    if (!debtorStatistics || debtorStatistics.length === 0) {
+      getStatistics();
+    }
+  }, [statistics, debtorStatistics, getProductsStats, getStatistics]);
 
   return (
     <div className="main-container">

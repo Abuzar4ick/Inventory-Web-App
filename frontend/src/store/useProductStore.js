@@ -61,6 +61,8 @@ export const useProductStore = create((set, get) => ({
         ),
       }));
 
+      get().getProductsStats();
+      
       toast.success("Mahsulot muvaffaqiyatli yangilandi");
     } catch (error) {
       toast.error("Mahsulotni yangilashda xatolik yuz berdi");
