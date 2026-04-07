@@ -18,7 +18,7 @@ const ProductsTable = () => {
   const { products, getProducts, areProductsGetting, isDeleting } = useProductStore();
 
   useEffect(() => {
-    if (!products) {
+    if (!products || products.length === 0) {
       getProducts();
     }
   }, [products, getProducts]);

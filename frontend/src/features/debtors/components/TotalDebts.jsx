@@ -6,7 +6,7 @@ const TotalDebts = () => {
   const { areStatisticsGetting, statistics, getStatistics } = useDebtStore();
 
   useEffect(() => {
-    if (!statistics) {
+    if (!statistics || statistics.length === 0) {
       getStatistics();
     }
   }, [statistics, getStatistics]);

@@ -8,8 +8,10 @@ const LawProductsList = () => {
   const { products, areProductsGetting, getProducts } = useProductStore();
 
   useEffect(() => {
-    getProducts();
-  }, [getProducts]);
+    if (!products || products.length === 0) {
+      getProducts();
+    }
+  }, [products, getProducts]);
 
   return (
     <div className="main-container bg-white rounded-xl shadow-sm py-8 px-6 flex flex-col gap-6">
