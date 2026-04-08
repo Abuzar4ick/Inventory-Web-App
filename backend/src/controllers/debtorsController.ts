@@ -136,3 +136,23 @@ export const getStatsOfDebtors = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+// Mark a debtor as paid
+export const markAsPaid = async (req: Request, res: Response) => {
+  try {
+    const existingDebtor = await queries.getDebtorById(req.params.id as string);
+    if (!existingDebtor) {
+      return res.status(404).json({ error: "Debtor not found" });
+    }
+
+    if (existingDebtor.userId !== req.user.id) {
+      return res.status(403).json({ error: "Access denied" });
+    }
+
+    const debtor = await queries.markAsPaid(req.params.id as string);
+    res.json(debtor);
+  } catch (error) {
+    console.error("Error marking debtor as paid:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
