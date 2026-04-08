@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDebtStore } from "@/store/useDebtStore";
+import DebtsListSkeleton from "./DebtsListSkeleton";
 // icons
 import { TiTick } from "react-icons/ti";
 import { FiEdit2 } from "react-icons/fi";
@@ -13,8 +14,14 @@ import UpdateDebt from "./modal-forms/UpdateDebt";
 import DeleteDebt from "./modal-forms/DeleteDebt";
 
 const DebtsList = () => {
-  const { getAllDebts, debts, isMarkingAsPaid, isDeleting } = useDebtStore();
+  const {
+    getAllDebts,
+    debts,
+    isDeleting,
+    areDebtsGetting: isLoading,
+  } = useDebtStore();
   const [selectedDebt, setSelectedDebt] = useState(null);
+
   useEffect(() => {
     if (!debts || debts.length === 0) {
       getAllDebts();
@@ -35,71 +42,84 @@ const DebtsList = () => {
           </tr>
         </thead>
         <tbody>
-          {debts.map((debt) => (
-            <tr
-              key={debt.id}
-              className={`h-15 transition-colors duration-200 
-              ${
-                debt.status === "paid"
-                  ? "text-[#909295] hover:bg-gray-50"
-                  : "bg-[#fef5f5] hover:bg-red-50"
-              }`}
-            >
-              <td className="font-bold">{debt.debtor_name}</td>
-              <td className="text-center">{debt.product_name}</td>
-              <td className="text-center">{debt.quantity}</td>
-              <td className="text-center font-bold">
-                {Number(debt?.money_amount || 0).toLocaleString("en-US")} UZS
-              </td>
-              <td className="text-center">{debt.date}</td>
-              <td className="text-center">
-                <span
-                  className={`badge text-[12px] text-white font-bold ${debt.status === "paid" ? "badge-success" : "badge-error"}`}
-                >
-                  {debt.status === "paid" ? "To'langan" : "To'lanmagan"}
-                </span>
-              </td>
-              <td className="text-end flex items-center justify-end gap-3">
-                {debt.status !== "paid" && (
-                  <button
-                    className="p-2 rounded-lg bg-green-100 text-green-600 
-                  hover:bg-green-200 hover:scale-110 
-                    transition-all duration-200"
-                    onClick={() => {
-                      setSelectedDebt(debt);
-                      document.getElementById("mark_as_paid_modal").showModal();
-                    }}
-                  >
-                    <TiTick size={16} />
-                  </button>
-                )}
-
-                <button
-                  className="p-2 rounded-lg bg-blue-100 text-blue-600 
-                hover:bg-blue-200 hover:scale-110 
-                  transition-all duration-200"
-                  onClick={() => {
-                    setSelectedDebt(debt);
-                    document.getElementById("update_debt_modal").showModal();
-                  }}
-                >
-                  <FiEdit2 size={16} />
-                </button>
-
-                <button
-                  className="p-2 rounded-lg bg-red-100 text-red-600 
-                hover:bg-red-200 hover:scale-110 
-                  transition-all duration-200"
-                  onClick={() => {
-                    setSelectedDebt(debt);
-                    document.getElementById("delete_debt_modal").showModal();
-                  }}
-                >
-                  <FiTrash2 size={16} />
-                </button>
+          {isLoading ? (
+            <DebtsListSkeleton />
+          ) : debts.length === 0 ? (
+            <tr>
+              <td colSpan="7" className="text-center py-10 text-gray-400">
+                Hozircha qarzlar yo‘q
               </td>
             </tr>
-          ))}
+          ) : (
+            debts.map((debt) => (
+              <tr
+                key={debt.id}
+                className={`h-15 transition-colors duration-200 
+                ${
+                  debt.status === "paid"
+                    ? "text-[#909295] hover:bg-gray-50"
+                    : "bg-[#fef5f5] hover:bg-red-50"
+                }`}
+              >
+                <td className="font-bold">{debt.debtor_name}</td>
+                <td className="text-center">{debt.product_name}</td>
+                <td className="text-center">{debt.quantity}</td>
+                <td className="text-center font-bold">
+                  {Number(debt?.money_amount || 0).toLocaleString("en-US")} UZS
+                </td>
+                <td className="text-center">{debt.date}</td>
+
+                <td className="text-center">
+                  <span
+                    className={`badge text-[12px] text-white font-bold ${
+                      debt.status === "paid" ? "badge-success" : "badge-error"
+                    }`}
+                  >
+                    {debt.status === "paid" ? "To'langan" : "To'lanmagan"}
+                  </span>
+                </td>
+
+                <td className="text-end flex items-center justify-end gap-3">
+                  {debt.status !== "paid" && (
+                    <button
+                      className="p-2 rounded-lg bg-green-100 text-green-600 
+                      hover:bg-green-200 hover:scale-110 transition-all duration-200"
+                      onClick={() => {
+                        setSelectedDebt(debt);
+                        document
+                          .getElementById("mark_as_paid_modal")
+                          .showModal();
+                      }}
+                    >
+                      <TiTick size={16} />
+                    </button>
+                  )}
+
+                  <button
+                    className="p-2 rounded-lg bg-blue-100 text-blue-600 
+                    hover:bg-blue-200 hover:scale-110 transition-all duration-200"
+                    onClick={() => {
+                      setSelectedDebt(debt);
+                      document.getElementById("update_debt_modal").showModal();
+                    }}
+                  >
+                    <FiEdit2 size={16} />
+                  </button>
+
+                  <button
+                    className="p-2 rounded-lg bg-red-100 text-red-600 
+                    hover:bg-red-200 hover:scale-110 transition-all duration-200"
+                    onClick={() => {
+                      setSelectedDebt(debt);
+                      document.getElementById("delete_debt_modal").showModal();
+                    }}
+                  >
+                    <FiTrash2 size={16} />
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
 
