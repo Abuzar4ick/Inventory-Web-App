@@ -188,3 +188,19 @@ export const getStatsOfDebtors = async (userId: string) => {
     totalDebtors: totalDebtors[0].count,
   };
 };
+
+// Mark a debtor as paid
+export const markAsPaid = async (id: string) => {
+  const existingDebtor = await getDebtorById(id);
+  if (!existingDebtor) {
+    throw new Error(`Debtor with id ${id} not found`);
+  }
+
+  const [debtor] = await db
+    .update(debtors)
+    .set({ status: "paid" })
+    .where(eq(debtors.id, id))
+    .returning();
+
+  return debtor;
+};
