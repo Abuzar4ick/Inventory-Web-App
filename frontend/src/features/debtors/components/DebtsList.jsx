@@ -1,13 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDebtStore } from "@/store/useDebtStore";
 // icons
 import { TiTick } from "react-icons/ti";
 import { FiEdit2 } from "react-icons/fi";
 import { FiTrash2 } from "react-icons/fi";
+// modals
+import { MarkAsPaidModal } from "@/components/ui/Modals";
+import { UpdateDebtorModal } from "@/components/ui/Modals";
+import { DeleteDebtorModal } from "@/components/ui/Modals";
+import MarkAsPaid from "./modal-forms/MarkAsPaid";
+import UpdateDebt from "./modal-forms/UpdateDebt";
+import DeleteDebt from "./modal-forms/DeleteDebt";
 
 const DebtsList = () => {
-  const { getAllDebts, debts } = useDebtStore();
-
+  const { getAllDebts, debts, isMarkingAsPaid, isDeleting } = useDebtStore();
+  const [selectedDebt, setSelectedDebt] = useState(null);
   useEffect(() => {
     if (!debts || debts.length === 0) {
       getAllDebts();
@@ -58,6 +65,10 @@ const DebtsList = () => {
                     className="p-2 rounded-lg bg-green-100 text-green-600 
                   hover:bg-green-200 hover:scale-110 
                     transition-all duration-200"
+                    onClick={() => {
+                      setSelectedDebt(debt);
+                      document.getElementById("mark_as_paid_modal").showModal();
+                    }}
                   >
                     <TiTick size={16} />
                   </button>
@@ -67,6 +78,10 @@ const DebtsList = () => {
                   className="p-2 rounded-lg bg-blue-100 text-blue-600 
                 hover:bg-blue-200 hover:scale-110 
                   transition-all duration-200"
+                  onClick={() => {
+                    setSelectedDebt(debt);
+                    document.getElementById("update_debt_modal").showModal();
+                  }}
                 >
                   <FiEdit2 size={16} />
                 </button>
@@ -75,6 +90,10 @@ const DebtsList = () => {
                   className="p-2 rounded-lg bg-red-100 text-red-600 
                 hover:bg-red-200 hover:scale-110 
                   transition-all duration-200"
+                  onClick={() => {
+                    setSelectedDebt(debt);
+                    document.getElementById("delete_debt_modal").showModal();
+                  }}
                 >
                   <FiTrash2 size={16} />
                 </button>
@@ -83,6 +102,23 @@ const DebtsList = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Modals */}
+      <MarkAsPaidModal>
+        <MarkAsPaid selectedDebt={selectedDebt} />
+      </MarkAsPaidModal>
+
+      <UpdateDebtorModal>
+        <UpdateDebt debt={selectedDebt} />
+      </UpdateDebtorModal>
+
+      <DeleteDebtorModal>
+        <DeleteDebt
+          selectedDebt={selectedDebt}
+          isDeleting={isDeleting}
+          setSelectedDebt={setSelectedDebt}
+        />
+      </DeleteDebtorModal>
     </div>
   );
 };
