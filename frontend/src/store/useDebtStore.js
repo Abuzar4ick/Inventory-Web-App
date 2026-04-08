@@ -4,8 +4,10 @@ import toast from "react-hot-toast";
 
 export const useDebtStore = create((set, get) => ({
   statistics: [],
+  debts: [],
   areStatisticsGetting: false,
   isAdding: false,
+  areDebtsGetting: false,
 
   getStatistics: async () => {
     set({ areStatisticsGetting: true });
@@ -33,6 +35,20 @@ export const useDebtStore = create((set, get) => ({
       console.error("Error adding new debt:", error);
     } finally {
       set({ isAdding: false });
+    }
+  },
+
+  getAllDebts: async () => {
+    set({ areDebtsGetting: true });
+
+    try {
+      const response = await axiosInstance.get("/debtors");
+      set({ debts: response.data });
+    } catch (error) {
+      toast.error("Qarzlarni olishda xatolik yuz berdi");
+      console.error("Error getting all debts:", error);
+    } finally {
+      set({ areDebtsGetting: false });
     }
   },
 }));
