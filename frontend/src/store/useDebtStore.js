@@ -30,7 +30,12 @@ export const useDebtStore = create((set, get) => ({
     set({ isAdding: true });
 
     try {
-      await axiosInstance.post("/debtors", data);
+      const res = await axiosInstance.post("/debtors", data);
+
+      set((state) => ({
+        debts: [res.data, ...state.debts],
+      }));
+
       toast.success("Qarz muvaffaqiyatli qo'shildi");
       get().getStatistics();
     } catch (error) {
@@ -59,13 +64,16 @@ export const useDebtStore = create((set, get) => ({
     set({ isUpdating: true });
 
     try {
-      await axiosInstance.put(`/debtors/${id}`, data);
-      toast.success("Qarz muvaffaqiyatli yangilandi");
-      get().getAllDebts();
+      const res = await axiosInstance.put(`/debtors/${id}`, data);
+
+      set((state) => ({
+        debts: state.debts.map((d) => (d.id === id ? res.data : d)),
+      }));
+
+      toast.success("Yangilandi");
       get().getStatistics();
     } catch (error) {
-      toast.error("Qarz yangilashda xatolik yuz berdi");
-      console.error("Error updating debt:", error);
+      toast.error("Xatolik");
     } finally {
       set({ isUpdating: false });
     }
@@ -76,12 +84,15 @@ export const useDebtStore = create((set, get) => ({
 
     try {
       await axiosInstance.delete(`/debtors/${id}`);
+
+      set((state) => ({
+        debts: state.debts.filter((d) => d.id !== id),
+      }));
+
       toast.success("Qarz muvaffaqiyatli o'chirildi");
-      get().getAllDebts();
       get().getStatistics();
     } catch (error) {
       toast.error("Qarz o'chirishda xatolik yuz berdi");
-      console.error("Error deleting debt:", error);
     } finally {
       set({ isDeleting: false });
     }
@@ -92,12 +103,17 @@ export const useDebtStore = create((set, get) => ({
 
     try {
       await axiosInstance.put(`/debtors/${id}/status`, { status: "paid" });
+
+      set((state) => ({
+        debts: state.debts.map((d) =>
+          d.id === id ? { ...d, status: "paid" } : d,
+        ),
+      }));
+
       toast.success("Qarz to'langan deb belgilandi");
-      get().getAllDebts();
       get().getStatistics();
     } catch (error) {
-      toast.error("Qarz holatini o'zgartirishda xatolik yuz berdi");
-      console.error("Error marking debt as paid:", error);
+      toast.error("Xatolik yuz berdi");
     } finally {
       set({ isMarkingAsPaid: false });
     }

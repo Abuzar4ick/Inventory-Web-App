@@ -19,7 +19,7 @@ const AddDebt = () => {
     e.preventDefault();
 
     // Validate form data
-    if (!data.description || !data.debtor_name || !data.product_name || !data.date || data.quantity <= 0 || data.money_amount <= 0) {
+    if (!data.debtor_name || !data.product_name || !data.date || data.quantity <= 0 || data.money_amount <= 0) {
       toast.error("Iltimos, barcha maydonlarni to'ldiring.", {
         position: "bottom-left"
 });
