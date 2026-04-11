@@ -39,6 +39,8 @@ export const useProductStore = create((set, get) => ({
 
       toast.success("Mahsulot muvaffaqiyatli qo‘shildi");
       document.getElementById("add_modal").close();
+      
+      await get().getProductsStats();
     } catch (error) {
       toast.error("Mahsulot qo‘shishda xatolik yuz berdi");
       console.error("Error adding product:", error);
@@ -61,8 +63,8 @@ export const useProductStore = create((set, get) => ({
         ),
       }));
 
-      get().getProductsStats();
-      
+      await get().getProductsStats();
+
       toast.success("Mahsulot muvaffaqiyatli yangilandi");
     } catch (error) {
       toast.error("Mahsulotni yangilashda xatolik yuz berdi");
@@ -83,6 +85,7 @@ export const useProductStore = create((set, get) => ({
       }));
 
       toast.success("Mahsulot muvaffaqiyatli o‘chirildi");
+      await get().getProductsStats();
     } catch (error) {
       toast.error("Mahsulotni o‘chirishda xatolik yuz berdi");
       console.error("Error deleting product:", error);
@@ -105,20 +108,11 @@ export const useProductStore = create((set, get) => ({
     }
   },
 
-  searchProducts: async (query) => {
-    set({ areProductsGetting: true });
-
-    try {
-      const filteredProducts = get().allProducts.filter((p) =>
-        p.name.toLowerCase().includes(query.toLowerCase()),
-      );
-      set({ products: filteredProducts });
-    } catch (error) {
-      toast.error("Mahsulotlarni qidirishda xatolik yuz berdi");
-      console.error("Error searching products:", error);
-    } finally {
-      set({ areProductsGetting: false });
-    }
+  searchProducts: (query) => {
+    const filteredProducts = get().allProducts.filter((p) =>
+      p.name.toLowerCase().includes(query.toLowerCase()),
+    );
+    set({ products: filteredProducts });
   },
 
   setProducts: (products) => set({ products }),
