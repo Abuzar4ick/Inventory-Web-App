@@ -30,4 +30,8 @@ if (ENV.NODE_ENV === "production") {
   });
 }
 
-app.listen(ENV.PORT, () => console.log(`Server running on port ${ENV.PORT}`));
+export default app;
+
+if (require.main === module) {
+  app.listen(ENV.PORT, () => console.log(`Server running on port ${ENV.PORT}`));
+}
