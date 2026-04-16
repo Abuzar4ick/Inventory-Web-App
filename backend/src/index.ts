@@ -5,9 +5,9 @@ import cookieParser from "cookie-parser";
 
 import { ENV } from "./config/env";
 
-import userRoutes from "./routes/authRoutes";
-import productRoutes from "./routes/productsRoutes";
-import debtorsRoutes from "./routes/debtorsRoutes";
+import userRoutes from "./modules/auth/auth.routes";
+import productRoutes from "./modules/products/products.routes";
+import debtorsRoutes from "./modules/debts/debts.routes";
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.use(cors({ origin: ENV.FRONTEND_URL, credentials: true }));
 
 app.use("/api/auth", userRoutes);
 app.use("/api/products", productRoutes);
-app.use("/api/debtors", debtorsRoutes);
+app.use("/api/debts", debtorsRoutes);
 
 if (ENV.NODE_ENV === "production") {
   const __dirname = path.resolve();
@@ -29,5 +29,9 @@ if (ENV.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
 }
+
+app.listen(ENV.PORT, () => {
+  console.log(`Server is running on port ${ENV.PORT}`);
+});
 
 export default app;

@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router();
-import { protectRoute } from "../middlewares/authMiddleware";
+import { protectRoute } from "../../middlewares/authMiddleware";
 
 import {
   createProduct,
@@ -10,7 +10,7 @@ import {
   deleteProduct,
   getStatsOfProducts,
   searchProducts,
-} from "../controllers/productsController";
+} from "./products.controller";
 
 router.post("/", protectRoute, createProduct);
 router.get("/my", protectRoute, getMyProducts);

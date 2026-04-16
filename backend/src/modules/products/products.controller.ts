@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import * as queries from "../db/queries";
+import { productsRepository } from "./products.repository";
 
 // Create a new product
 export const createProduct = async (req: Request, res: Response) => {
@@ -11,7 +11,7 @@ export const createProduct = async (req: Request, res: Response) => {
         .json({ error: "Barcha maydonlar to'ldirilishi kerak" });
     }
 
-    const newProduct = await queries.createProduct({
+    const newProduct = await productsRepository.createProduct({
       name,
       quantity,
       min_quantity,
@@ -28,7 +28,7 @@ export const createProduct = async (req: Request, res: Response) => {
 // Get products for the authenticated user
 export const getMyProducts = async (req: Request, res: Response) => {
   try {
-    const products = await queries.getProductsByUserId(req.user?.id as string);
+    const products = await productsRepository.getProductsByUserId(req.user?.id as string);
     res.status(200).json(products);
   } catch (error) {
     console.error("Error getting products:", error);
@@ -39,7 +39,7 @@ export const getMyProducts = async (req: Request, res: Response) => {
 // Get a product by ID
 export const getProductById = async (req: Request, res: Response) => {
   try {
-    const product = await queries.getProductById(req.params.id as string);
+    const product = await productsRepository.getProductById(req.params.id as string);
     if (!product) return res.status(404).json({ error: "Product not found" });
 
     res.status(200).json(product);
@@ -59,7 +59,7 @@ export const updateProduct = async (req: Request, res: Response) => {
         .json({ error: "Barcha maydonlar to'ldirilishi kerak" });
     }
 
-    const existingProduct = await queries.getProductById(
+    const existingProduct = await productsRepository.getProductById(
       req.params.id as string,
     );
     if (!existingProduct) {
@@ -70,7 +70,7 @@ export const updateProduct = async (req: Request, res: Response) => {
       return res.status(403).json({ error: "Access denied" });
     }
 
-    const updatedProduct = await queries.updateProduct(
+    const updatedProduct = await productsRepository.updateProduct(
       req.params.id as string,
       {
         name,
@@ -89,7 +89,7 @@ export const updateProduct = async (req: Request, res: Response) => {
 // Delete a product
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const existingProduct = await queries.getProductById(
+    const existingProduct = await productsRepository.getProductById(
       req.params.id as string,
     );
     if (!existingProduct) {
@@ -100,7 +100,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
       return res.status(403).json({ error: "Access denied" });
     }
 
-    await queries.deleteProduct(req.params.id as string);
+    await productsRepository.deleteProduct(req.params.id as string);
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
     console.error("Error deleting product:", error);
@@ -111,7 +111,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
 // Get statistics of products (for dashboard page)
 export const getStatsOfProducts = async (req: Request, res: Response) => {
   try {
-    const stats = await queries.getStatsOfProducts(req.user?.id as string);
+    const stats = await productsRepository.getStatsOfProducts(req.user?.id as string);
     res.status(200).json(stats);
   } catch (error) {
     console.error("Error getting product stats:", error);
@@ -126,7 +126,7 @@ export const searchProducts = async (req: Request, res: Response) => {
 
     if (!q) return res.status(400).json({ error: "Search query is required" });
 
-    const products = await queries.searchProductsByName(
+    const products = await productsRepository.searchProductsByName(
       req.user?.id as string,
       q as string,
     );

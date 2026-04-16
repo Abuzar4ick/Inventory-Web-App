@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import * as queries from "../db/queries";
+import { debtsRepository } from "./debts.repository";
 
-// Create a new debtor
-export const createDebtor = async (req: Request, res: Response) => {
+// Create a new debt
+export const createDebt = async (req: Request, res: Response) => {
   try {
     const {
       debtor_name,
@@ -19,7 +19,7 @@ export const createDebtor = async (req: Request, res: Response) => {
         .json({ error: "Barcha maydonlar to'ldirilishi kerak" });
     }
 
-    const debtor = await queries.createDebtor({
+    const debt = await debtsRepository.createDebt({
       debtor_name,
       product_name,
       date,
@@ -28,20 +28,20 @@ export const createDebtor = async (req: Request, res: Response) => {
       money_amount,
       userId: req.user?.id,
     });
-    res.status(201).json(debtor);
+    res.status(201).json(debt);
   } catch (error) {
-    console.error("Error creating debtor:", error);
+    console.error("Error creating debt:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-// Get all debtors for a user
-export const getDebtors = async (req: Request, res: Response) => {
+// Get all debts for a user
+export const getDebts = async (req: Request, res: Response) => {
   try {
-    const debtors = await queries.getDebtorsByUserId(req.user?.id);
-    res.json(debtors);
+    const debts = await debtsRepository.getDebtByUserId(req.user?.id);
+    res.json(debts);
   } catch (error) {
-    console.error("Error fetching debtors:", error);
+    console.error("Error fetching debts:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -49,7 +49,7 @@ export const getDebtors = async (req: Request, res: Response) => {
 // Get a specific debtor by ID
 export const getDebtorById = async (req: Request, res: Response) => {
   try {
-    const debtor = await queries.getDebtorById(req.params.id as string);
+    const debtor = await debtsRepository.getDebtById(req.params.id as string);
     if (!debtor) {
       return res.status(404).json({ error: "Debtor not found" });
     }
@@ -61,8 +61,8 @@ export const getDebtorById = async (req: Request, res: Response) => {
   }
 };
 
-// Update a debtor
-export const updateDebtor = async (req: Request, res: Response) => {
+// Update a debt
+export const updateDebt = async (req: Request, res: Response) => {
   try {
     const {
       debtor_name,
@@ -79,17 +79,17 @@ export const updateDebtor = async (req: Request, res: Response) => {
         .json({ error: "Barcha maydonlar to'ldirilishi kerak" });
     }
 
-    const existingDebtor = await queries.getDebtorById(req.params.id as string);
+    const existingDebt = await debtsRepository.getDebtById(req.params.id as string);
 
-    if (!existingDebtor) {
-      return res.status(404).json({ error: "Debtor not found" });
+    if (!existingDebt) {
+      return res.status(404).json({ error: "Debt not found" });
     }
 
-    if (existingDebtor.userId !== req.user.id) {
+    if (existingDebt.userId !== req.user.id) {
       return res.status(403).json({ error: "Access denied" });
     }
 
-    const debtor = await queries.updateDebtor(req.params.id as string, {
+    const debt = await debtsRepository.updateDebt(req.params.id as string, {
       debtor_name,
       product_name,
       date,
@@ -98,61 +98,61 @@ export const updateDebtor = async (req: Request, res: Response) => {
       money_amount,
     });
 
-    res.json(debtor);
+    res.json(debt);
   } catch (error) {
-    console.error("Error updating debtor:", error);
+    console.error("Error updating debt:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-// Delete a debtor
-export const deleteDebtor = async (req: Request, res: Response) => {
+// Delete a debt
+export const deleteDebt = async (req: Request, res: Response) => {
   try {
-    const existingDebtor = await queries.getDebtorById(req.params.id as string);
+    const existingDebt = await debtsRepository.getDebtById(req.params.id as string);
 
-    if (!existingDebtor) {
-      return res.status(404).json({ error: "Debtor not found" });
+    if (!existingDebt) {
+      return res.status(404).json({ error: "Debt not found" });
     }
 
-    if (existingDebtor.userId !== req.user.id) {
+    if (existingDebt.userId !== req.user.id) {
       return res.status(403).json({ error: "Access denied" });
     }
 
-    await queries.deleteDebtor(req.params.id as string);
-    res.json({ message: "Debtor deleted successfully" });
+    await debtsRepository.deleteDebt(req.params.id as string);
+    res.json({ message: "Debt deleted successfully" });
   } catch (error) {
-    console.error("Error deleting debtor:", error);
+    console.error("Error deleting debt:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-// Get stats of debtors for a user
-export const getStatsOfDebtors = async (req: Request, res: Response) => {
+// Get stats of debts for a user
+export const getStatsOfDebts = async (req: Request, res: Response) => {
   try {
-    const stats = await queries.getStatsOfDebtors(req.user?.id);
+    const stats = await debtsRepository.getStatsOfDebts(req.user?.id);
     res.json(stats);
   } catch (error) {
-    console.error("Error fetching debtor stats:", error);
+    console.error("Error fetching debt stats:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-// Mark a debtor as paid
+// Mark a debt as paid
 export const markAsPaid = async (req: Request, res: Response) => {
   try {
-    const existingDebtor = await queries.getDebtorById(req.params.id as string);
-    if (!existingDebtor) {
-      return res.status(404).json({ error: "Debtor not found" });
+    const existingDebt = await debtsRepository.getDebtById(req.params.id as string);
+    if (!existingDebt) {
+      return res.status(404).json({ error: "Debt not found" });
     }
 
-    if (existingDebtor.userId !== req.user.id) {
+    if (existingDebt.userId !== req.user.id) {
       return res.status(403).json({ error: "Access denied" });
     }
 
-    const debtor = await queries.markAsPaid(req.params.id as string);
-    res.json(debtor);
+    const debt = await debtsRepository.markAsPaid(req.params.id as string);
+    res.json(debt);
   } catch (error) {
-    console.error("Error marking debtor as paid:", error);
+    console.error("Error marking debt as paid:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
