@@ -1,10 +1,10 @@
 import { relations } from "drizzle-orm";
-import { debtors } from "../schema/debt.schema";
+import { debts } from "../schema/debt.schema";
 import { users } from "../schema/user.schema";
 
-export const debtorsRelations = relations(debtors, ({ one }) => ({
+export const debtsRelations = relations(debts, ({ one }) => ({
   user: one(users, {
-    fields: [debtors.userId],
+    fields: [debts.userId],
     references: [users.id],
   }),
 }));
