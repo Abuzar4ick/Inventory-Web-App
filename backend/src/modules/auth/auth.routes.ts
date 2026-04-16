@@ -4,8 +4,8 @@ import {
   signupUser,
   loginUser,
   logoutUser,
-} from "../controllers/authController";
-import { protectRoute } from "../middlewares/authMiddleware";
+} from "./auth.controller";
+import { protectRoute } from "../../middlewares/authMiddleware";
 
 router.post("/signup", signupUser);
 router.post("/login", loginUser);

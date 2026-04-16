@@ -1,6 +1,6 @@
 /// <reference path="../../types/globals.d.ts" />
 import express, { Response, NextFunction } from "express";
-import * as queries from "../db/queries";
+import { authRepository } from "../modules/auth/auth.repository";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { ENV } from "../config/env";
 
@@ -28,7 +28,7 @@ export const protectRoute = async (
       return res.status(401).json({ error: "Invalid token payload" });
     }
 
-    const user = await queries.getUserById(decoded.id);
+    const user = await authRepository.getUserById(decoded.id);
     if (!user) return res.status(401).json({ error: "User not found" });
 
     req.user = user;

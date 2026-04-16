@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import * as queries from "../db/queries";
+import { authRepository } from "./auth.repository";
 import bcrypt from "bcrypt";
-import { generateToken } from "../lib/utils";
-import { ENV } from "../config/env";
+import { generateToken } from "../../lib/utils";
+import { ENV } from "../../config/env";
 
 export const signupUser = async (req: Request, res: Response) => {
   try {
@@ -14,7 +14,7 @@ export const signupUser = async (req: Request, res: Response) => {
         .json({ error: "Barcha maydonlar to'ldirilishi kerak" });
     }
 
-    const existingUser = await queries.getUserByUsername(username);
+    const existingUser = await authRepository.getUserByUsername(username);
     if (existingUser) {
       return res
         .status(409)
@@ -23,7 +23,7 @@ export const signupUser = async (req: Request, res: Response) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await queries.createUser({
+    const newUser = await authRepository.createUser({
       name,
       username,
       password: hashedPassword,
@@ -51,7 +51,7 @@ export const loginUser = async (req: Request, res: Response) => {
         .json({ error: "Barcha maydonlar to'ldirilishi kerak" });
     }
 
-    const user = await queries.getUserByUsername(username);
+    const user = await authRepository.getUserByUsername(username);
     if (!user) {
       return res
         .status(401)
