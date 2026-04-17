@@ -6,9 +6,12 @@ import {
   logoutUser,
 } from "./auth.controller";
 import { protectRoute } from "../../middlewares/authMiddleware";
+// validation schemas
+import { validate } from "../../middlewares/validate";
+import { signupSchema, loginSchema } from "../../db/validation/user.validation";
 
-router.post("/signup", signupUser);
-router.post("/login", loginUser);
+router.post("/signup", validate(signupSchema), signupUser);
+router.post("/login", validate(loginSchema), loginUser);
 router.post("/logout", logoutUser);
 
 // Protected route to check if user is authenticated

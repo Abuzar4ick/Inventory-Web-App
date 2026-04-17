@@ -11,13 +11,19 @@ import {
   getStatsOfProducts,
   searchProducts,
 } from "./products.controller";
+// validation schemas
+import {
+  createProductSchema,
+  updateProductSchema,
+} from "../../db/validation/product.validation";
+import { validate } from "../../middlewares/validate";
 
-router.post("/", protectRoute, createProduct);
+router.post("/", protectRoute, validate(createProductSchema), createProduct);
 router.get("/my", protectRoute, getMyProducts);
 router.get("/stats", protectRoute, getStatsOfProducts);
 router.get("/search", protectRoute, searchProducts);
 router.get("/:id", protectRoute, getProductById);
-router.put("/:id", protectRoute, updateProduct);
+router.put("/:id", protectRoute, validate(updateProductSchema), updateProduct);
 router.delete("/:id", protectRoute, deleteProduct);
 
 export default router;
