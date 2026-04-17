@@ -1,6 +1,6 @@
 import { pgTable, text, timestamp, uuid, integer } from "drizzle-orm/pg-core";
 import { users } from "./user.schema";
-import { debtorStatusEnum } from "./enums";
+import { debtStatusEnum } from "./enums";
 
 export const debts = pgTable("debts", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -16,7 +16,7 @@ export const debts = pgTable("debts", {
   quantity: integer("quantity").notNull().default(1),
   money_amount: integer("money_amount").notNull().default(0),
 
-  status: debtorStatusEnum("status").notNull().default("pending"),
+  status: debtStatusEnum("status").notNull().default("pending"),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" })

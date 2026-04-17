@@ -5,7 +5,7 @@ import { protectRoute } from "../../middlewares/authMiddleware";
 import {
   createDebt,
   getDebts,
-  getDebtorById,
+  getDebtById,
   updateDebt,
   deleteDebt,
   getStatsOfDebts,
@@ -15,7 +15,7 @@ import {
 router.post("/", protectRoute, createDebt);
 router.get("/", protectRoute, getDebts);
 router.get("/stats", protectRoute, getStatsOfDebts);
-router.get("/:id", protectRoute, getDebtorById);
+router.get("/:id", protectRoute, getDebtById);
 router.put("/:id", protectRoute, updateDebt);
 router.delete("/:id", protectRoute, deleteDebt);
 router.put("/:id/status", protectRoute, markAsPaid);

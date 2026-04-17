@@ -5,8 +5,8 @@ import { NewDebt } from "../../db/types";
 
 export const debtsRepository = {
   createDebt: async (data: NewDebt) => {
-    const [debtor] = await db.insert(debts).values(data).returning();
-    return debtor;
+    const [debt] = await db.insert(debts).values(data).returning();
+    return debt;
   },
 
   getDebtByUserId: async (userId: string) => {
@@ -23,34 +23,34 @@ export const debtsRepository = {
   },
 
   updateDebt: async (id: string, data: Partial<NewDebt>) => {
-    const existingDebtor = await debtsRepository.getDebtById(id);
-    if (!existingDebtor) {
-      throw new Error(`Debtor with id ${id} not found`);
+    const existingDebt = await debtsRepository.getDebtById(id);
+    if (!existingDebt) {
+      throw new Error(`Debt with id ${id} not found`);
     }
 
-    const [debtor] = await db
+    const [debt] = await db
       .update(debts)
       .set(data)
       .where(eq(debts.id, id))
       .returning();
 
-    return debtor;
+    return debt;
   },
 
   deleteDebt: async (id: string) => {
-    const existingDebtor = await debtsRepository.getDebtById(id);
-    if (!existingDebtor) {
-      throw new Error(`Debtor with id ${id} not found`);
+    const existingDebt = await debtsRepository.getDebtById(id);
+    if (!existingDebt) {
+      throw new Error(`Debt with id ${id} not found`);
     }
 
-    const [debtor] = await db.delete(debts).where(eq(debts.id, id)).returning();
+    const [debt] = await db.delete(debts).where(eq(debts.id, id)).returning();
 
-    return debtor;
+    return debt;
   },
 
-  // Get stats of debtors for a user
+  // Get stats of debts for a user
   getStatsOfDebts: async (userId: string) => {
-    // get all amount of money owed by debtors (not paid yet)
+    // get all amount of money owed by debts (not paid yet)
     const totalAmountOwed = await db
       .select({ total: sql`sum(${debts.money_amount})` })
       .from(debts)
@@ -67,19 +67,19 @@ export const debtsRepository = {
     };
   },
 
-  // Mark a debtor as paid
+  // Mark a debt as paid
   markAsPaid: async (id: string) => {
-    const existingDebtor = await debtsRepository.getDebtById(id);
-    if (!existingDebtor) {
-      throw new Error(`Debtor with id ${id} not found`);
+    const existingDebt = await debtsRepository.getDebtById(id);
+    if (!existingDebt) {
+      throw new Error(`Debt with id ${id} not found`);
     }
 
-    const [debtor] = await db
+    const [debt] = await db
       .update(debts)
       .set({ status: "paid" })
       .where(eq(debts.id, id))
       .returning();
 
-    return debtor;
+    return debt;
   },
 };

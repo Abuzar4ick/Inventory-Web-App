@@ -7,7 +7,7 @@ import { ENV } from "./config/env";
 
 import userRoutes from "./modules/auth/auth.routes";
 import productRoutes from "./modules/products/products.routes";
-import debtorsRoutes from "./modules/debts/debts.routes";
+import debtsRoutes from "./modules/debts/debts.routes";
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.use(cors({ origin: ENV.FRONTEND_URL, credentials: true }));
 
 app.use("/api/auth", userRoutes);
 app.use("/api/products", productRoutes);
-app.use("/api/debts", debtorsRoutes);
+app.use("/api/debts", debtsRoutes);
 
 if (ENV.NODE_ENV === "production") {
   const __dirname = path.resolve();

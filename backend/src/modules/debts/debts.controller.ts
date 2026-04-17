@@ -46,17 +46,17 @@ export const getDebts = async (req: Request, res: Response) => {
   }
 };
 
-// Get a specific debtor by ID
-export const getDebtorById = async (req: Request, res: Response) => {
+// Get a specific debt by ID
+export const getDebtById = async (req: Request, res: Response) => {
   try {
-    const debtor = await debtsRepository.getDebtById(req.params.id as string);
-    if (!debtor) {
-      return res.status(404).json({ error: "Debtor not found" });
+    const debt = await debtsRepository.getDebtById(req.params.id as string);
+    if (!debt) {
+      return res.status(404).json({ error: "Debt not found" });
     }
 
-    res.json(debtor);
+    res.json(debt);
   } catch (error) {
-    console.error("Error fetching debtor:", error);
+    console.error("Error fetching debt:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
