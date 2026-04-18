@@ -23,11 +23,6 @@ export const debtsRepository = {
   },
 
   updateDebt: async (id: string, data: Partial<NewDebt>) => {
-    const existingDebt = await debtsRepository.getDebtById(id);
-    if (!existingDebt) {
-      throw new Error(`Debt with id ${id} not found`);
-    }
-
     const [debt] = await db
       .update(debts)
       .set(data)
@@ -38,11 +33,6 @@ export const debtsRepository = {
   },
 
   deleteDebt: async (id: string) => {
-    const existingDebt = await debtsRepository.getDebtById(id);
-    if (!existingDebt) {
-      throw new Error(`Debt with id ${id} not found`);
-    }
-
     const [debt] = await db.delete(debts).where(eq(debts.id, id)).returning();
 
     return debt;
@@ -69,11 +59,6 @@ export const debtsRepository = {
 
   // Mark a debt as paid
   markAsPaid: async (id: string) => {
-    const existingDebt = await debtsRepository.getDebtById(id);
-    if (!existingDebt) {
-      throw new Error(`Debt with id ${id} not found`);
-    }
-
     const [debt] = await db
       .update(debts)
       .set({ status: "paid" })

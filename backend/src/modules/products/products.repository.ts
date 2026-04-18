@@ -8,7 +8,7 @@ export const productsRepository = {
     const [product] = await db.insert(products).values(data).returning();
     return product;
   },
-  
+
   getProductsByUserId: async (userId: string) => {
     return db.query.products.findMany({
       where: eq(products.userId, userId),
@@ -23,11 +23,6 @@ export const productsRepository = {
   },
 
   updateProduct: async (id: string, data: Partial<NewProduct>) => {
-    const existingProduct = await productsRepository.getProductById(id);
-    if (!existingProduct) {
-      throw new Error(`Product with id ${id} not found`);
-    }
-
     const [product] = await db
       .update(products)
       .set(data)
@@ -38,11 +33,6 @@ export const productsRepository = {
   },
 
   deleteProduct: async (id: string) => {
-    const existingProduct = await productsRepository.getProductById(id);
-    if (!existingProduct) {
-      throw new Error(`Product with id ${id} not found`);
-    }
-
     const [product] = await db
       .delete(products)
       .where(eq(products.id, id))
