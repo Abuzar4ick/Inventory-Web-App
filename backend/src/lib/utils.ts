@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { Response } from "express";
+import { Request, Response, NextFunction, RequestHandler } from "express";
 import { ENV } from "../config/env";
 
 export const generateToken = (userId: string, res: Response): string => {
@@ -20,3 +20,9 @@ export const generateToken = (userId: string, res: Response): string => {
 
   return token;
 };
+
+export const asyncHandler =
+  (fn: RequestHandler): RequestHandler =>
+  (req: Request, res: Response, next: NextFunction) => {
+    Promise.resolve(fn(req, res, next)).catch(next); // passes error to errorHandler
+  };
