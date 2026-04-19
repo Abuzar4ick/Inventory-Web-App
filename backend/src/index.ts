@@ -5,6 +5,9 @@ import cookieParser from "cookie-parser";
 
 import { ENV } from "./config/env";
 
+import { errorHandler } from "./middlewares/errorHandler";
+import { NotFoundError } from "./errors";
+
 import userRoutes from "./modules/auth/auth.routes";
 import productRoutes from "./modules/products/products.routes";
 import debtsRoutes from "./modules/debts/debts.routes";
@@ -20,6 +23,11 @@ app.use("/api/auth", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/debts", debtsRoutes);
 
+// 404 handler
+app.use((_req, _res, next) => {
+  next(new NotFoundError("Route"));
+});
+
 if (ENV.NODE_ENV === "production") {
   const __dirname = path.resolve();
 
@@ -29,6 +37,8 @@ if (ENV.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
 }
+
+app.use(errorHandler);
 
 app.listen(ENV.PORT, () => {
   console.log(`Server is running on port ${ENV.PORT}`);
