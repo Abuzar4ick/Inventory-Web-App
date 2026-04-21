@@ -15,7 +15,7 @@ export const debtsService = {
 
   async getDebtById(id: string, requestingUserId: string) {
     const debt = await debtsRepository.getDebtById(id);
-    if (!debt) throw new NotFoundError("Qarz topilmadi");
+    if (!debt) throw new NotFoundError("Qarz topilmadi", "DEBT");
 
     if (debt.userId !== requestingUserId) {
       throw new ForbiddenError("Siz bu qarzni ko'rish huquqiga ega emassiz");
@@ -30,7 +30,7 @@ export const debtsService = {
     requestingUserId: string,
   ) {
     const existing = await debtsRepository.getDebtById(id);
-    if (!existing) throw new NotFoundError("Qarz topilmadi");
+    if (!existing) throw new NotFoundError("Qarz topilmadi", "DEBT");
 
     if (existing.userId !== requestingUserId) {
       throw new ForbiddenError("Siz bu qarzni yangilash huquqiga ega emassiz");
@@ -46,7 +46,7 @@ export const debtsService = {
 
   async deleteDebt(id: string, requestingUserId: string) {
     const existing = await debtsRepository.getDebtById(id);
-    if (!existing) throw new NotFoundError("Qarz topilmadi");
+    if (!existing) throw new NotFoundError("Qarz topilmadi", "DEBT");
 
     if (existing.userId !== requestingUserId) {
       throw new ForbiddenError("Siz bu qarzni o'chirish huquqiga ega emassiz");
@@ -67,7 +67,7 @@ export const debtsService = {
 
   async markAsPaid(id: string, requestingUserId: string) {
     const existing = await debtsRepository.getDebtById(id);
-    if (!existing) throw new NotFoundError("Qarz topilmadi");
+    if (!existing) throw new NotFoundError("Qarz topilmadi", "DEBT");
 
     if (existing.userId !== requestingUserId) {
       throw new ForbiddenError("Siz bu qarzni to'lash huquqiga ega emassiz");
