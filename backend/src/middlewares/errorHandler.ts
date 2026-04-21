@@ -4,7 +4,7 @@ import { ENV } from "../config/env";
 
 export const errorHandler = (
   err: Error,
-  req: Request,
+  _: Request,
   res: Response,
   next: NextFunction,
 ) => {
@@ -12,6 +12,7 @@ export const errorHandler = (
     res.status(err.statusCode).json({
       status: "error",
       message: err.message,
+      code: err.code,
     });
     return;
   }
