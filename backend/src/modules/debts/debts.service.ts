@@ -1,5 +1,6 @@
 import { debtsRepository } from "./debts.repository";
 import { NewDebt } from "../../db/types";
+import { NotFoundError, ForbiddenError } from "../../errors";
 
 export const debtsService = {
   async create(data: NewDebt) {
@@ -14,14 +15,10 @@ export const debtsService = {
 
   async getDebtById(id: string, requestingUserId: string) {
     const debt = await debtsRepository.getDebtById(id);
-    if (!debt) {
-      throw { status: 404, message: "Qarz topilmadi" };
-    }
+    if (!debt) throw new NotFoundError("Qarz topilmadi");
+
     if (debt.userId !== requestingUserId) {
-      throw {
-        status: 403,
-        message: "Siz bu qarzni ko'rish huquqiga ega emassiz",
-      };
+      throw new ForbiddenError("Siz bu qarzni ko'rish huquqiga ega emassiz");
     }
 
     return { status: 200, data: debt };
@@ -33,14 +30,10 @@ export const debtsService = {
     requestingUserId: string,
   ) {
     const existing = await debtsRepository.getDebtById(id);
-    if (!existing) {
-      throw { status: 404, message: "Qarz topilmadi" };
-    }
+    if (!existing) throw new NotFoundError("Qarz topilmadi");
+
     if (existing.userId !== requestingUserId) {
-      throw {
-        status: 403,
-        message: "Siz bu qarzni yangilash huquqiga ega emassiz",
-      };
+      throw new ForbiddenError("Siz bu qarzni yangilash huquqiga ega emassiz");
     }
 
     const updatedDebt = await debtsRepository.updateDebt(id, data);
@@ -53,14 +46,10 @@ export const debtsService = {
 
   async deleteDebt(id: string, requestingUserId: string) {
     const existing = await debtsRepository.getDebtById(id);
-    if (!existing) {
-      throw { status: 404, message: "Qarz topilmadi" };
-    }
+    if (!existing) throw new NotFoundError("Qarz topilmadi");
+
     if (existing.userId !== requestingUserId) {
-      throw {
-        status: 403,
-        message: "Siz bu qarzni o'chirish huquqiga ega emassiz",
-      };
+      throw new ForbiddenError("Siz bu qarzni o'chirish huquqiga ega emassiz");
     }
 
     const deletedDebt = await debtsRepository.deleteDebt(id);
@@ -78,14 +67,10 @@ export const debtsService = {
 
   async markAsPaid(id: string, requestingUserId: string) {
     const existing = await debtsRepository.getDebtById(id);
-    if (!existing) {
-      throw { status: 404, message: "Qarz topilmadi" };
-    }
+    if (!existing) throw new NotFoundError("Qarz topilmadi");
+
     if (existing.userId !== requestingUserId) {
-      throw {
-        status: 403,
-        message: "Siz bu qarzni to'lash huquqiga ega emassiz",
-      };
+      throw new ForbiddenError("Siz bu qarzni to'lash huquqiga ega emassiz");
     }
 
     const updatedDebt = await debtsRepository.markAsPaid(id);

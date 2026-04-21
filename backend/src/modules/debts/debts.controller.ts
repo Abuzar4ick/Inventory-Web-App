@@ -1,179 +1,117 @@
 import type { Request, Response } from "express";
 import { debtsService } from "./debts.service";
+import { asyncHandler } from "../../lib/utils";
+import { UnauthorizedError } from "../../errors";
 
 // Create a new debt
-export const createDebt = async (req: Request, res: Response) => {
-  try {
-    const userId = req.user?.id as string;
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+export const createDebt = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id as string;
+  if (!userId) throw new UnauthorizedError("Unauthorized");
 
-    const {
-      debtor_name,
-      product_name,
-      date,
-      description,
-      quantity,
-      money_amount,
-    } = req.body;
+  const {
+    debtor_name,
+    product_name,
+    date,
+    description,
+    quantity,
+    money_amount,
+  } = req.body;
 
-    const response = await debtsService.create({
-      userId,
-      debtor_name,
-      product_name,
-      date,
-      description,
-      quantity,
-      money_amount,
-    });
+  const response = await debtsService.create({
+    userId,
+    debtor_name,
+    product_name,
+    date,
+    description,
+    quantity,
+    money_amount,
+  });
 
-    res.status(201).json(response);
-  } catch (error: any) {
-    if (error.status) {
-      return res.status(error.status).json({ error: error.message });
-    }
-    console.error("Error creating debt:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
+  res.status(201).json(response);
+});
 
 // Get all debts for a user
-export const getDebts = async (req: Request, res: Response) => {
-  try {
-    const userId = req.user?.id as string;
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-    const response = await debtsService.getDebts(userId);
-    res.status(response.status).json(response);
-  } catch (error: any) {
-    if (error.status) {
-      return res.status(error.status).json({ error: error.message });
-    }
-    console.error("Error fetching debts:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
+export const getDebts = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id as string;
+  if (!userId) throw new UnauthorizedError("Unauthorized");
+
+  const response = await debtsService.getDebts(userId);
+  res.status(response.status).json(response);
+});
 
 // Get a specific debt by ID
-export const getDebtById = async (req: Request, res: Response) => {
-  try {
-    const userId = req.user?.id as string;
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+export const getDebtById = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id as string;
+  if (!userId) throw new UnauthorizedError("Unauthorized");
 
-    const response = await debtsService.getDebtById(
-      req.params.id as string,
-      userId,
-    );
-    res.status(response.status).json(response);
-  } catch (error: any) {
-    if (error.status) {
-      return res.status(error.status).json({ error: error.message });
-    }
-    console.error("Error fetching debt:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
+  const response = await debtsService.getDebtById(
+    req.params.id as string,
+    userId,
+  );
+  res.status(response.status).json(response);
+});
 
 // Update a debt
-export const updateDebt = async (req: Request, res: Response) => {
-  try {
-    const userId = req.user?.id as string;
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+export const updateDebt = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id as string;
+  if (!userId) throw new UnauthorizedError("Unauthorized");
 
-    const {
+  const {
+    debtor_name,
+    product_name,
+    date,
+    description,
+    quantity,
+    money_amount,
+  } = req.body;
+
+  const response = await debtsService.updateDebt(
+    req.params.id as string,
+    {
       debtor_name,
       product_name,
       date,
       description,
       quantity,
       money_amount,
-    } = req.body;
+    },
+    userId,
+  );
 
-    const response = await debtsService.updateDebt(
-      req.params.id as string,
-      {
-        debtor_name,
-        product_name,
-        date,
-        description,
-        quantity,
-        money_amount,
-      },
-      userId,
-    );
-
-    res.status(response.status).json(response);
-  } catch (error: any) {
-    if (error.status) {
-      return res.status(error.status).json({ error: error.message });
-    }
-    console.error("Error updating debt:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
+  res.status(response.status).json(response);
+});
 
 // Delete a debt
-export const deleteDebt = async (req: Request, res: Response) => {
-  try {
-    const userId = req.user?.id as string;
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+export const deleteDebt = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id as string;
+  if (!userId) throw new UnauthorizedError("Unauthorized");
 
-    const response = await debtsService.deleteDebt(
-      req.params.id as string,
-      userId,
-    );
-    res.status(response.status).json(response);
-  } catch (error: any) {
-    if (error.status) {
-      return res.status(error.status).json({ error: error.message });
-    }
-    console.error("Error deleting debt:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
+  const response = await debtsService.deleteDebt(
+    req.params.id as string,
+    userId,
+  );
+  res.status(response.status).json(response);
+});
 
 // Get stats of debts for a user
-export const getStatsOfDebts = async (req: Request, res: Response) => {
-  try {
+export const getStatsOfDebts = asyncHandler(
+  async (req: Request, res: Response) => {
     const userId = req.user?.id as string;
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+    if (!userId) throw new UnauthorizedError("Unauthorized");
 
     const response = await debtsService.getStats(userId);
     res.status(response.status).json(response);
-  } catch (error) {
-    console.error("Error fetching debt stats:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
+  },
+);
 
 // Mark a debt as paid
-export const markAsPaid = async (req: Request, res: Response) => {
-  try {
-    const userId = req.user?.id as string;
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+export const markAsPaid = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id as string;
+  if (!userId) throw new UnauthorizedError("Unauthorized");
 
-    const response = await debtsService.markAsPaid(
-      req.params.id as string,
-      userId,
-    );
-    res.status(response.status).json(response);
-  } catch (error: any) {
-    if (error.status) {
-      return res.status(error.status).json({ error: error.message });
-    }
-    console.error("Error marking debt as paid:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
+  const response = await debtsService.markAsPaid(
+    req.params.id as string,
+    userId,
+  );
+  res.status(response.status).json(response);
+});
