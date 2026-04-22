@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
+import { getErrorMessage } from "../lib/errorHandler";
 import toast from "react-hot-toast";
 
 export const useDebtStore = create((set, get) => ({
@@ -16,10 +17,10 @@ export const useDebtStore = create((set, get) => ({
     set({ areStatisticsGetting: true });
 
     try {
-      const response = await axiosInstance.get("/debtors/stats");
-      set({ statistics: response.data });
+      const response = await axiosInstance.get("/debts/stats");
+      set({ statistics: response.data.data });
     } catch (error) {
-      toast.error("Statistikani olishda xatolik yuz berdi");
+      toast.error(getErrorMessage(error));
       console.error("Error getting statistics:", error);
     } finally {
       set({ areStatisticsGetting: false });
@@ -30,16 +31,16 @@ export const useDebtStore = create((set, get) => ({
     set({ isAdding: true });
 
     try {
-      const res = await axiosInstance.post("/debtors", data);
+      const res = await axiosInstance.post("/debts", data);
 
       set((state) => ({
-        debts: [res.data, ...state.debts],
+        debts: [res.data.data, ...state.debts],
       }));
 
       toast.success("Qarz muvaffaqiyatli qo'shildi");
       get().getStatistics();
     } catch (error) {
-      toast.error("Qarz qo'shishda xatolik yuz berdi");
+      toast.error(getErrorMessage(error));
       console.error("Error adding new debt:", error);
     } finally {
       set({ isAdding: false });
@@ -50,10 +51,10 @@ export const useDebtStore = create((set, get) => ({
     set({ areDebtsGetting: true });
 
     try {
-      const response = await axiosInstance.get("/debtors");
-      set({ debts: response.data });
+      const response = await axiosInstance.get("/debts");
+      set({ debts: response.data.data });
     } catch (error) {
-      toast.error("Qarzlarni olishda xatolik yuz berdi");
+      toast.error(getErrorMessage(error));
       console.error("Error getting all debts:", error);
     } finally {
       set({ areDebtsGetting: false });
@@ -64,16 +65,16 @@ export const useDebtStore = create((set, get) => ({
     set({ isUpdating: true });
 
     try {
-      const res = await axiosInstance.put(`/debtors/${id}`, data);
+      const res = await axiosInstance.put(`/debts/${id}`, data);
 
       set((state) => ({
-        debts: state.debts.map((d) => (d.id === id ? res.data : d)),
+        debts: state.debts.map((d) => (d.id === id ? res.data.data : d)),
       }));
 
       toast.success("Yangilandi");
       get().getStatistics();
     } catch (error) {
-      toast.error("Xatolik");
+      toast.error(getErrorMessage(error));
     } finally {
       set({ isUpdating: false });
     }
@@ -83,7 +84,7 @@ export const useDebtStore = create((set, get) => ({
     set({ isDeleting: true });
 
     try {
-      await axiosInstance.delete(`/debtors/${id}`);
+      await axiosInstance.delete(`/debts/${id}`);
 
       set((state) => ({
         debts: state.debts.filter((d) => d.id !== id),
@@ -92,7 +93,7 @@ export const useDebtStore = create((set, get) => ({
       toast.success("Qarz muvaffaqiyatli o'chirildi");
       get().getStatistics();
     } catch (error) {
-      toast.error("Qarz o'chirishda xatolik yuz berdi");
+      toast.error(getErrorMessage(error));
     } finally {
       set({ isDeleting: false });
     }
@@ -102,7 +103,7 @@ export const useDebtStore = create((set, get) => ({
     set({ isMarkingAsPaid: true });
 
     try {
-      await axiosInstance.put(`/debtors/${id}/status`, { status: "paid" });
+      await axiosInstance.put(`/debts/${id}/status`, { status: "paid" });
 
       set((state) => ({
         debts: state.debts.map((d) =>
@@ -113,7 +114,7 @@ export const useDebtStore = create((set, get) => ({
       toast.success("Qarz to'langan deb belgilandi");
       get().getStatistics();
     } catch (error) {
-      toast.error("Xatolik yuz berdi");
+      toast.error(getErrorMessage(error));
     } finally {
       set({ isMarkingAsPaid: false });
     }

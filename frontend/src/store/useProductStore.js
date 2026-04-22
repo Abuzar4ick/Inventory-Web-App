@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
+import { getErrorMessage } from "../lib/errorHandler";
 import toast from "react-hot-toast";
 
 export const useProductStore = create((set, get) => ({
@@ -18,9 +19,9 @@ export const useProductStore = create((set, get) => ({
 
     try {
       const response = await axiosInstance.get("/products/my");
-      set({ products: response.data, allProducts: response.data });
+      set({ products: response.data.data, allProducts: response.data.data });
     } catch (error) {
-      toast.error("Mahsulotlarni olishda xatolik yuz berdi");
+      toast.error(getErrorMessage(error));
       console.error("Error getting products:", error);
     } finally {
       set({ areProductsGetting: false });
@@ -33,16 +34,16 @@ export const useProductStore = create((set, get) => ({
     try {
       const response = await axiosInstance.post("/products", productData);
       set((state) => ({
-        products: [...state.products, response.data],
-        allProducts: [...state.allProducts, response.data],
+        products: [...state.products, response.data.data],
+        allProducts: [...state.allProducts, response.data.data],
       }));
 
       toast.success("Mahsulot muvaffaqiyatli qo‘shildi");
       document.getElementById("add_modal").close();
-      
+
       await get().getProductsStats();
     } catch (error) {
-      toast.error("Mahsulot qo‘shishda xatolik yuz berdi");
+      toast.error(getErrorMessage(error));
       console.error("Error adding product:", error);
     } finally {
       set({ isAdding: false });
@@ -56,10 +57,10 @@ export const useProductStore = create((set, get) => ({
       const response = await axiosInstance.put(`/products/${id}`, updatedData);
       set((state) => ({
         products: state.products.map((product) =>
-          product.id === id ? response.data : product,
+          product.id === id ? response.data.data : product,
         ),
         allProducts: state.allProducts.map((product) =>
-          product.id === id ? response.data : product,
+          product.id === id ? response.data.data : product,
         ),
       }));
 
@@ -67,7 +68,7 @@ export const useProductStore = create((set, get) => ({
 
       toast.success("Mahsulot muvaffaqiyatli yangilandi");
     } catch (error) {
-      toast.error("Mahsulotni yangilashda xatolik yuz berdi");
+      toast.error(getErrorMessage(error));
       console.error("Error updating product:", error);
     } finally {
       set({ isUpdating: false });
@@ -87,7 +88,7 @@ export const useProductStore = create((set, get) => ({
       toast.success("Mahsulot muvaffaqiyatli o‘chirildi");
       await get().getProductsStats();
     } catch (error) {
-      toast.error("Mahsulotni o‘chirishda xatolik yuz berdi");
+      toast.error(getErrorMessage(error));
       console.error("Error deleting product:", error);
     } finally {
       set({ isDeleting: false });
@@ -99,9 +100,9 @@ export const useProductStore = create((set, get) => ({
 
     try {
       const response = await axiosInstance.get("/products/stats");
-      set({ statistics: response.data });
+      set({ statistics: response.data.data });
     } catch (error) {
-      toast.error("Statistikani olishda xatolik yuz berdi");
+      toast.error(getErrorMessage(error));
       console.error("Error fetching product statistics:", error);
     } finally {
       set({ areStatsGetting: false });

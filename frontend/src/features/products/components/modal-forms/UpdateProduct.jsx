@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 const UpdateProduct = ({ product }) => {
   const { updateProduct, isUpdating: isLoading } = useProductStore();
-  
+
   const [data, setData] = useState({
     name: "",
     quantity: "",
@@ -34,7 +34,11 @@ const UpdateProduct = ({ product }) => {
     }
 
     // Create a new product object with the form data
-    updateProduct(product.id, data).then(() => {
+    updateProduct(product.id, {
+      name: data.name,
+      quantity: Number(data.quantity),
+      min_quantity: Number(data.min_quantity),
+    }).then(() => {
       document.getElementById("update_modal").close();
     });
   };
@@ -72,7 +76,7 @@ const UpdateProduct = ({ product }) => {
               type="number"
               placeholder="Joriy miqdorni kiriting"
               value={data.quantity}
-              onChange={(e) => setData({ ...data, quantity: Number(e.target.value) })}
+              onChange={(e) => setData({ ...data, quantity: e.target.value })}
               className="input input-bordered w-full pr-12 bg-[#f6f7f9]"
               required
             />
@@ -85,7 +89,7 @@ const UpdateProduct = ({ product }) => {
               placeholder="Minimal miqdorni kiriting"
               value={data.min_quantity}
               onChange={(e) =>
-                setData({ ...data, min_quantity: Number(e.target.value) })
+                setData({ ...data, min_quantity: e.target.value })
               }
               className="input input-bordered w-full pr-12 bg-[#f6f7f9]"
               required
