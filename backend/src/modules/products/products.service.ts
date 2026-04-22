@@ -1,5 +1,6 @@
 import { productsRepository } from "./products.repository";
 import { NewProduct } from "../../db/types";
+import { NotFoundError, ForbiddenError, ValidationError } from "../../errors";
 
 export const productsService = {
   async create(data: NewProduct) {
@@ -23,7 +24,7 @@ export const productsService = {
   async getById(id: string) {
     const product = await productsRepository.getProductById(id);
     if (!product) {
-      throw { status: 404, message: "Mahsulot topilmadi" };
+      throw new NotFoundError("Mahsulot topilmadi", "PRODUCT");
     }
 
     return {
@@ -39,12 +40,11 @@ export const productsService = {
     requestingUserId: string,
   ) {
     const existing = await productsRepository.getProductById(id);
-    if (!existing) throw { status: 404, message: "Mahsulot topilmadi" };
+    if (!existing) throw new NotFoundError("Mahsulot topilmadi", "PRODUCT");
     if (existing.userId !== requestingUserId) {
-      throw {
-        status: 403,
-        message: "Siz bu mahsulotni yangilash huquqiga ega emassiz",
-      };
+      throw new ForbiddenError(
+        "Siz bu mahsulotni yangilash huquqiga ega emassiz",
+      );
     }
 
     const updatedProduct = await productsRepository.updateProduct(id, data);
@@ -57,12 +57,11 @@ export const productsService = {
 
   async delete(id: string, requestingUserId: string) {
     const existing = await productsRepository.getProductById(id);
-    if (!existing) throw { status: 404, message: "Mahsulot topilmadi" };
+    if (!existing) throw new NotFoundError("Mahsulot topilmadi", "PRODUCT");
     if (existing.userId !== requestingUserId) {
-      throw {
-        status: 403,
-        message: "Siz bu mahsulotni o'chirish huquqiga ega emassiz",
-      };
+      throw new ForbiddenError(
+        "Siz bu mahsulotni o'chirish huquqiga ega emassiz",
+      );
     }
 
     await productsRepository.deleteProduct(id);
@@ -80,10 +79,7 @@ export const productsService = {
 
   async search(userId: string, query: string) {
     if (!query) {
-      return {
-        status: 400,
-        message: "Qidiruv so'zi talab qilinadi",
-      };
+      throw new ValidationError("Qidiruv so'zi talab qilinadi");
     }
 
     const products = await productsRepository.searchProductsByName(
