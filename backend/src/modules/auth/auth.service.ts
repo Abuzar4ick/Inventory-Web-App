@@ -3,13 +3,14 @@ import { authRepository } from "./auth.repository";
 import bcrypt from "bcrypt";
 import { generateToken } from "../../lib/utils";
 import { ENV } from "../../config/env";
-import { NewUser, User } from "../../db/types";
+import { NewUser } from "../../db/types";
+import { ConflictError, UnauthorizedError } from "../../errors";
 
 export const authService = {
   async signup(data: NewUser, res: Response) {
     const existingUser = await authRepository.getUserByUsername(data.username);
     if (existingUser) {
-      throw { status: 409, message: "Bu foydalanuvchi nomi band qilingan" };
+      throw new ConflictError("Bu foydalanuvchi nomi allaqachon mavjud");
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -24,14 +25,16 @@ export const authService = {
   },
 
   async login(data: { username: string; password: string }, res: Response) {
-    const user = await authRepository.getUserByUsername(data.username as string);
+    const user = await authRepository.getUserByUsername(
+      data.username as string,
+    );
     if (!user) {
-      throw { status: 401, message: "Noto'g'ri foydalanuvchi nomi yoki parol" };
+      throw new UnauthorizedError("Noto'g'ri foydalanuvchi nomi yoki parol");
     }
 
     const isPasswordValid = await bcrypt.compare(data.password, user.password);
     if (!isPasswordValid) {
-      throw { status: 401, message: "Noto'g'ri foydalanuvchi nomi yoki parol" };
+      throw new UnauthorizedError("Noto'g'ri foydalanuvchi nomi yoki parol");
     }
 
     return generateToken(user.id, res);
