@@ -8,8 +8,8 @@ const AddProduct = () => {
 
   const [data, setData] = useState({
     name: '',
-    quantity: '',
-    min_quantity: ''
+    quantity: "",
+    min_quantity: ""
   })
 
   const handleSubmit = (e) => {
@@ -22,7 +22,11 @@ const AddProduct = () => {
     }
 
     // Create a new product object with the form data
-    addProduct(data);
+    addProduct({
+      name: data.name,
+      quantity: Number(data.quantity),
+      min_quantity: Number(data.min_quantity)
+    });
   }
 
   return (

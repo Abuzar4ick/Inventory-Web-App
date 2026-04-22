@@ -46,7 +46,14 @@ const UpdateDebt = ({ debt }) => {
     }
 
     // Create a new debt object with the form data
-    updateDebt(debt.id, data).then(() => {
+    updateDebt(debt.id, {
+      debtor_name: data.debtor_name,
+      product_name: data.product_name,
+      date: data.date,
+      description: data.description,
+      quantity: Number(data.quantity),
+      money_amount: Number(data.money_amount),
+    }).then(() => {
       document.getElementById("update_debt_modal").close();
     });
   };

@@ -22,12 +22,19 @@ const AddDebt = () => {
     if (!data.debtor_name || !data.product_name || !data.date || data.quantity <= 0 || data.money_amount <= 0) {
       toast.error("Iltimos, barcha maydonlarni to'ldiring.", {
         position: "bottom-left"
-});
+      });
       return;
     }
 
     // Create a new product object with the form data
-    addNewDebt(data).then(() => {
+    addNewDebt({
+      debtor_name: data.debtor_name,
+      product_name: data.product_name,
+      date: data.date,
+      description: data.description,
+      quantity: Number(data.quantity),
+      money_amount: Number(data.money_amount),
+    }).then(() => {
       // Close the modal after successful addition
       document.getElementById("add_debtor_modal").close();
     });
@@ -111,27 +118,27 @@ const AddDebt = () => {
             </h2>
           </div>
 
-            <div className="relative">
-              <label className="font-bold text-sm">Sana (qarz berilgan sana)</label>
-              <input
-                type="date"
-                value={data.date}
-                onChange={(e) => setData({ ...data, date: e.target.value })}
-                className="input input-bordered w-full bg-[#f6f7f9]"
-                required
-              />
-            </div>
+          <div className="relative">
+            <label className="font-bold text-sm">Sana (qarz berilgan sana)</label>
+            <input
+              type="date"
+              value={data.date}
+              onChange={(e) => setData({ ...data, date: e.target.value })}
+              className="input input-bordered w-full bg-[#f6f7f9]"
+              required
+            />
+          </div>
 
-            <div className="relative">
-              <label className="font-bold text-sm">Izoh (ixtiyoriy)</label>
-              <textarea
-                type="text"
-                placeholder="Qarz haqida izoh yozing..."
-                value={data.description}
-                onChange={(e) => setData({ ...data, description: e.target.value })}
-                className="input input-bordered w-full bg-[#f6f7f9] min-h-[75px] pt-2"
-              />
-            </div>
+          <div className="relative">
+            <label className="font-bold text-sm">Izoh (ixtiyoriy)</label>
+            <textarea
+              type="text"
+              placeholder="Qarz haqida izoh yozing..."
+              value={data.description}
+              onChange={(e) => setData({ ...data, description: e.target.value })}
+              className="input input-bordered w-full bg-[#f6f7f9] min-h-[75px] pt-2"
+            />
+          </div>
 
         </div>
 

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
+import { getErrorMessage } from "../lib/errorHandler";
 import toast from "react-hot-toast";
 
 export const useAuthStore = create((set, get) => ({
@@ -26,12 +27,13 @@ export const useAuthStore = create((set, get) => ({
     set({ isSigningUp: true });
 
     try {
-      const res = await axiosInstance.post("/auth/signup", data);
-      set({ authUser: res.data });
+      await axiosInstance.post("/auth/signup", data);
+      // Token is set in cookie, check auth on next request
+      await get().checkAuth();
 
       toast.success("Hisob muvaffaqiyatli yaratildi!");
     } catch (error) {
-      toast.error(error.response.data.error);
+      toast.error(getErrorMessage(error));
     } finally {
       set({ isSigningUp: false });
     }
@@ -41,12 +43,13 @@ export const useAuthStore = create((set, get) => ({
     set({ isLoggingIn: true });
 
     try {
-      const res = await axiosInstance.post("/auth/login", data);
-      set({ authUser: res.data });
+      await axiosInstance.post("/auth/login", data);
+      // Token is set in cookie, check auth on next request
+      await get().checkAuth();
 
       toast.success("Hisobga muvaffaqiyatli kirdingiz!");
     } catch (error) {
-      toast.error(error.response.data.error);
+      toast.error(getErrorMessage(error));
     } finally {
       set({ isLoggingIn: false });
     }
