@@ -48,4 +48,14 @@ export const authService = {
       secure: ENV.NODE_ENV !== "development",
     });
   },
+
+  async getProfile(userId: string) {
+    const user = await authRepository.getUserById(userId);
+    if (!user) {
+      console.log(user)
+      throw new UnauthorizedError("Foydalanuvchi topilmadi");
+    }
+
+    return user;
+  },
 };
