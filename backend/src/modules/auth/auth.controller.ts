@@ -28,3 +28,10 @@ export const logoutUser = asyncHandler(async (_: any, res: Response) => {
     .status(200)
     .json({ message: "Foydalanuvchi muvaffaqiyatli tizimdan chiqdi" });
 });
+
+export const getProfile = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  const user = await authService.getProfile(userId as string);
+
+  res.status(200).json({ user });
+});

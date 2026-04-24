@@ -27,7 +27,7 @@ app.use("/api/feedbacks", feedbacksRoutes);
 
 // 404 handler
 app.use((_req, _res, next) => {
-  next(new NotFoundError("Route"));
+  next(new NotFoundError("Route", "Route"));
 });
 
 if (ENV.NODE_ENV === "production") {
