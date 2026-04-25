@@ -9,10 +9,12 @@ import {
   deleteFeedback,
   markFeedbackAsReviewed,
 } from "./feedbacks.controller";
+// validation schemas
+import { validate } from "../../middlewares/validate";
+import { createFeedbackSchema } from "../../db/validation/feedback.validation";
 
-router.post("/", protectRoute, createFeedback);
+router.post("/", protectRoute, validate(createFeedbackSchema), createFeedback);
 // TODO: Add admin middleware to protect the following routes
-// TODO: Add zod validation for request bodies and params
 router.get("/", getFeedbacks);
 router.get("/:id", getFeedbackById);
 router.delete("/:id", deleteFeedback);
