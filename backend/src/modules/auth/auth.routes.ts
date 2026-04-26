@@ -4,7 +4,8 @@ import {
   signupUser,
   loginUser,
   logoutUser,
-  getProfile
+  getProfile,
+  changePassword,
 } from "./auth.controller";
 import { protectRoute } from "../../middlewares/authMiddleware";
 // validation schemas
@@ -15,6 +16,7 @@ router.post("/signup", validate(signupSchema), signupUser);
 router.post("/login", validate(loginSchema), loginUser);
 router.post("/logout", logoutUser);
 router.get("/profile", protectRoute, getProfile);
+router.post("/change-password", protectRoute, changePassword);
 
 // Protected route to check if user is authenticated
 router.get("/check", protectRoute, (req: Request, res: Response) =>
