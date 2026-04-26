@@ -21,3 +21,9 @@ export const loginSchema = z.object({
   username: z.string().min(1, "Foydalanuvchi nomi kiritilishi shart"),
   password: z.string().min(1, "Parol kiritilishi shart"),
 });
+
+// For changing password: userId, currentPassword, newPassword
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1, "Joriy parol kiritilishi shart"),
+  newPassword: z.string().min(1, "Yangi parol kiritilishi shart"),
+});
