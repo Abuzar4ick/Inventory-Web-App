@@ -25,4 +25,22 @@ export const authRepository = {
       },
     });
   },
+
+  getPasswordByUserId: async (id: string) => {
+    return db.query.users.findFirst({
+      where: eq(users.id, id),
+      columns: {
+        password: true,
+      }
+    })
+  },
+
+  changePassword: async (id: string, newPassword: string) => {
+    const [user] = await db
+      .update(users)
+      .set({ password: newPassword })
+      .where(eq(users.id, id))
+      .returning();
+    return user;
+  },
 };

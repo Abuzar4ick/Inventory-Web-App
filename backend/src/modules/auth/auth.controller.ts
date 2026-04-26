@@ -35,3 +35,19 @@ export const getProfile = asyncHandler(async (req: Request, res: Response) => {
 
   res.status(200).json({ user });
 });
+
+export const changePassword = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { currentPassword, newPassword } = req.body;
+
+    const result = await authService.changePassword(
+      req.user?.id as string,
+      currentPassword,
+      newPassword,
+    );
+
+    res
+      .status(200)
+      .json({ message: "Parol muvaffaqiyatli o'zgartirildi", user: result });
+  },
+);
