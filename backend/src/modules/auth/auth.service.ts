@@ -52,10 +52,32 @@ export const authService = {
   async getProfile(userId: string) {
     const user = await authRepository.getUserById(userId);
     if (!user) {
-      console.log(user)
+      console.log(user);
       throw new UnauthorizedError("Foydalanuvchi topilmadi");
     }
 
     return user;
+  },
+
+  async changePassword(
+    userId: string,
+    currentPassword: string,
+    newPassword: string,
+  ) {
+    const user = await authRepository.getPasswordByUserId(userId);
+    if (!user) {
+      throw new UnauthorizedError("Foydalanuvchi topilmadi");
+    }
+
+    const isCurrentPasswordValid = await bcrypt.compare(
+      currentPassword,
+      user.password,
+    );
+    if (!isCurrentPasswordValid) {
+      throw new UnauthorizedError("Joriy parol noto'g'ri");
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    return authRepository.changePassword(userId, hashedNewPassword);
   },
 };
