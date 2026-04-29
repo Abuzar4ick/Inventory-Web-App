@@ -8,6 +8,7 @@ import { FiUser } from "react-icons/fi";
 import { FiMenu } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import { FiDollarSign } from "react-icons/fi";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 const Navbar = () => {
   const { logout } = useAuthStore();
@@ -63,6 +64,19 @@ const Navbar = () => {
               >
                 <FiDollarSign size={20} />
                 Qarzlar
+              </NavLink>
+
+              <NavLink
+                to="/help-center"
+                className={({ isActive }) =>
+                  `btn btn-ghost flex gap-2 ${isActive
+                    ? "btn-soft btn-primary"
+                    : "text-[#868b98] hover:text-black"
+                  }`
+                }
+              >
+                <FaRegQuestionCircle size={20} />
+                Yordam
               </NavLink>
             </div>
           </div>
@@ -181,6 +195,21 @@ const Navbar = () => {
             >
               <FiDollarSign size={20} />
               Qarzlar
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/help-center"
+              className={({ isActive }) =>
+                `btn btn-ghost justify-start flex gap-2 ${isActive
+                  ? "btn-soft btn-primary"
+                  : "text-[#868b98] hover:text-black"
+                }`
+              }
+            >
+              <FaRegQuestionCircle size={20} />
+              Yordam
             </NavLink>
           </li>
         </ul>
