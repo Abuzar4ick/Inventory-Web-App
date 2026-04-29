@@ -6,7 +6,7 @@ import AddDebt from "@/features/debtors/components/AddDebt";
 // icon
 import { FiPlus } from "react-icons/fi";
 
-const TitleBar = ({ pageTitle, modalBtnType }) => {
+const TitleBar = ({ pageTitle, modalBtnType, pageDescription }) => {
   const [resetKey, setResetKey] = useState(0);
 
   const handleAddButtonClick = () => {
@@ -25,19 +25,29 @@ const TitleBar = ({ pageTitle, modalBtnType }) => {
   return (
     <div className="main-container flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
 
-      <h1 className="text-2xl font-bold">{pageTitle}</h1>
+      <div className="flex flex-col">
+        <h1 className="text-2xl font-bold">{pageTitle}</h1>
 
-      <button className="btn btn-primary" onClick={handleAddButtonClick}>
-        <FiPlus size={16} /> {btnText}
-      </button>
+        {pageDescription && (
+          <p className="text-gray-600">{pageDescription}</p>
+        )}
+      </div>
 
-      <AddModal onClose={() => setResetKey(prev => prev + 1)}>
-        <AddProduct key={resetKey} />
-      </AddModal>
+      {modalBtnType && (
+        <>
+          <button className="btn btn-primary" onClick={handleAddButtonClick}>
+            <FiPlus size={16} /> {btnText}
+          </button>
 
-      <AddDebtorModal onClose={() => setResetKey(prev => prev + 1)}>
-        <AddDebt key={resetKey} />
-      </AddDebtorModal>
+          <AddModal onClose={() => setResetKey(prev => prev + 1)}>
+            <AddProduct key={resetKey} />
+          </AddModal>
+
+          <AddDebtorModal onClose={() => setResetKey(prev => prev + 1)}>
+            <AddDebt key={resetKey} />
+          </AddDebtorModal>
+        </>
+      )}
     </div>
   )
 }

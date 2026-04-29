@@ -12,6 +12,7 @@ import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignUpPage";
 import DebtorsPage from "./features/debtors/pages/DebtorsPage";
+import HelpPage from "./features/help/pages/HelpPage";
 // component
 import PageLoader from "./components/common/PageLoader";
 
@@ -44,6 +45,10 @@ function App() {
         {
           path: "debtors",
           element: authUser ? <DebtorsPage /> : <Navigate to={"/auth/login"} />,
+        },
+        {
+          path: "help-center",
+          element: authUser ? <HelpPage /> : <Navigate to={"/auth/login"} />,
         }
       ],
     },
