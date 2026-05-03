@@ -45,7 +45,6 @@ const CommonQuestions = () => {
               key={q.id}
               className="collapse collapse-arrow bg-base-100 border border-base-300"
             >
-              {/* ✅ checkbox = independent per item → multiple can be open */}
               <input type="checkbox" id={`collapse-${q.id}`} />
               <div className="collapse-title font-semibold">{q.question}</div>
               <div className="collapse-content text-sm">{q.answer}</div>
