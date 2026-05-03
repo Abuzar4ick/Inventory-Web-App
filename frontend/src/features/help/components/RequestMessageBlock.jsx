@@ -5,22 +5,20 @@ import toast from "react-hot-toast";
 import { LuSend } from "react-icons/lu";
 import { FiLoader } from "react-icons/fi";
 
-const ErrorMessageBlock = () => {
-  const { sendErrorMessage, isErrorMsgSending } = useFeedbackStore();
+const RequestMessageBlock = () => {
+  const { sendReqMessage, isReqMsgSending } = useFeedbackStore();
   const [message, setMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!message || message.length < 5) {
-      toast.error(
-        "Xatolik haqida xabar kamida 5 harifdan iborat bo'lishi kerak",
-      );
+      toast.error("Taklif kamida 5 harifdan iborat bo'lishi kerak");
 
       return;
     }
 
-    sendErrorMessage(message).then(() => setMessage(""));
+    sendReqMessage(message).then(() => setMessage(""));
   };
 
   return (
@@ -29,17 +27,17 @@ const ErrorMessageBlock = () => {
         onSubmit={handleSubmit}
         className="bg-white w-full max-w-[750px] p-4 sm:p-6 rounded-lg flex flex-col gap-6 shadow-md"
       >
-        <h2 className="text-xl font-semibold">Xatolik haqida xabar berish</h2>
+        <h2 className="text-xl font-semibold">Taklif yuborish</h2>
 
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="border border-gray-300 rounded-lg p-4 outline-[#ef4343] min-h-25 max-h-100"
-          placeholder="Muammo haqida yozing..."
+          className="border border-gray-300 rounded-lg p-4 outline-primary min-h-25 max-h-100"
+          placeholder="Taklifingizni yozing..."
         ></textarea>
 
-        <button type="submit" disabled={isErrorMsgSending} className="btn bg-[#ef4343] text-white flex items-center gap-2">
-          {isErrorMsgSending ? (
+        <button type="submit" disabled={isReqMsgSending} className="btn btn-primary text-white flex items-center gap-2">
+          {isReqMsgSending ? (
             <FiLoader className="animate-spin text-lg" />
           ) : (
             <>
@@ -54,4 +52,4 @@ const ErrorMessageBlock = () => {
   );
 };
 
-export default ErrorMessageBlock;
+export default RequestMessageBlock;

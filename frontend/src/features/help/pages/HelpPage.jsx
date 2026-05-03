@@ -3,6 +3,7 @@ import TitleBar from "@/components/layout/TitleBar";
 import ContactBlock from "../components/ContactBlock";
 import CommonQuestions from "../components/CommonQuestions";
 import ErrorMessageBlock from "../components/ErrorMessageBlock";
+import RequestMessageBlock from "../components/RequestMessageBlock";
 
 const HelpPage = () => {
   return (
@@ -16,6 +17,7 @@ const HelpPage = () => {
       <ContactBlock />
       <CommonQuestions />
       <ErrorMessageBlock />
+      <RequestMessageBlock />
     </div>
   );
 };
