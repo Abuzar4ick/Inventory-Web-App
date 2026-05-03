@@ -6,7 +6,7 @@ import { UnauthorizedError } from "../../errors";
 // Create new feedback
 export const createFeedback = asyncHandler(
   async (req: Request, res: Response) => {
-    const userId = req.user?.id;
+    const userId = req.user?.id as string;
     if (!userId) throw new UnauthorizedError("Unauthorized");
 
     const { type, message } = req.body;
