@@ -5,9 +5,11 @@ import toast from "react-hot-toast";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
+  profile: [],
   isSigningUp: false,
   isLoggingIn: false,
   isCheckingAuth: false,
+  isProfileGetting: false,
 
   checkAuth: async () => {
     set({ isCheckingAuth: true });
@@ -63,6 +65,19 @@ export const useAuthStore = create((set, get) => ({
     } catch (error) {
       toast.error("Hisobdan chiqishda xatolik yuz berdi");
       console.log("Logout error:", error);
+    }
+  },
+
+  getProfile: async () => {
+    set({ isProfileGetting: true });
+
+    try {
+      const response = await axiosInstance.get("/auth/profile");
+      set({ profileData: response.data.data });
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    } finally {
+      set({ isProfileGetting: false });
     }
   },
 }));
