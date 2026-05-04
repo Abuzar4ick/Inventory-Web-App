@@ -8,7 +8,7 @@ import AuthLayout from "./layouts/AuthLayout";
 // pages
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
 import ProductsPage from "./features/products/pages/ProductsPage";
-import ProfilePage from "./pages/ProfilePage";
+import ProfilePage from "./features/profile/pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignUpPage";
 import DebtorsPage from "./features/debtors/pages/DebtorsPage";
