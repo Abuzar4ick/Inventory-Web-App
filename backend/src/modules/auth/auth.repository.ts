@@ -20,10 +20,21 @@ export const authRepository = {
         id: true,
         name: true,
         username: true,
+        phone_number: true,
         createdAt: true,
         updatedAt: true,
       },
     });
+  },
+
+  updateUserProfile: async (id: string, name: string, username: string, phone_number: string) => {
+    const [user] = await db
+      .update(users)
+      .set({ name, username, phone_number })
+      .where(eq(users.id, id))
+      .returning();
+
+    return user;
   },
 
   getPasswordByUserId: async (id: string) => {
@@ -31,8 +42,8 @@ export const authRepository = {
       where: eq(users.id, id),
       columns: {
         password: true,
-      }
-    })
+      },
+    });
   },
 
   changePassword: async (id: string, newPassword: string) => {
