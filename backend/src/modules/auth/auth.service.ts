@@ -3,7 +3,7 @@ import { authRepository } from "./auth.repository";
 import bcrypt from "bcrypt";
 import { generateToken } from "../../lib/utils";
 import { ENV } from "../../config/env";
-import { NewUser } from "../../db/types";
+import { NewUser, User } from "../../db/types";
 import { ConflictError, UnauthorizedError } from "../../errors";
 
 export const authService = {
@@ -51,12 +51,47 @@ export const authService = {
 
   async getProfile(userId: string) {
     const user = await authRepository.getUserById(userId);
+    if (!user) throw new UnauthorizedError("Foydalanuvchi topilmadi");
+
+    return user;
+  },
+
+  async updateProfile(profile: User, userId: string) {
+    let { name, username, phone_number } = profile;
+
+    const user = await authRepository.getUserById(userId);
     if (!user) {
-      console.log(user);
       throw new UnauthorizedError("Foydalanuvchi topilmadi");
     }
 
-    return user;
+    name = name?.trim();
+    username = username?.trim();
+    phone_number = phone_number?.trim();
+
+    if (username && username !== user.username) {
+      const existingUser = await authRepository.getUserByUsername(username);
+      if (existingUser) {
+        throw new ConflictError("Bu foydalanuvchi nomi allaqachon mavjud");
+      }
+    }
+
+    const updatedUser = await authRepository.updateUserProfile(
+      userId,
+      name || user.name,
+      username || user.username,
+      phone_number || user.phone_number,
+    );
+
+    return {
+      status: 200,
+      message: "Profile muvaffaqiyatli yangilandi",
+      user: {
+        id: updatedUser.id,
+        name: updatedUser.name,
+        username: updatedUser.username,
+        phone_number: updatedUser.phone_number,
+      },
+    };
   },
 
   async changePassword(

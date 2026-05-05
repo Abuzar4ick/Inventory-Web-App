@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { authService } from "./auth.service";
 import { asyncHandler } from "../../lib/utils";
+import { User } from "../../db/types";
 
 export const signupUser = asyncHandler(async (req: Request, res: Response) => {
   const { name, username, password } = req.body;
@@ -35,6 +36,23 @@ export const getProfile = asyncHandler(async (req: Request, res: Response) => {
 
   res.status(200).json({ user });
 });
+
+export const updateProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { name, username, phone_number } = req.body;
+    const userId = req.user?.id;
+
+    const result = await authService.updateProfile(
+      { name, username, phone_number } as User,
+      userId as string,
+    );
+
+    res.status(result.status).json({
+      message: result.message,
+      user: result.user,
+    });
+  },
+);
 
 export const changePassword = asyncHandler(
   async (req: Request, res: Response) => {

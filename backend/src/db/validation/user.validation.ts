@@ -27,3 +27,39 @@ export const changePasswordSchema = z.object({
   currentPassword: z.string().min(1, "Joriy parol kiritilishi shart"),
   newPassword: z.string().min(1, "Yangi parol kiritilishi shart"),
 });
+
+// For updating profile: name, username, phone_number — all optional but if provided, must be valid
+export const updateProfileSchema = z
+  .object({
+    name: z
+      .union([
+        z.string().min(2, "Ism kamida 2 ta belgidan iborat bo'lishi kerak"),
+        z.literal(""),
+      ])
+      .optional(),
+    username: z
+      .union([
+        z
+          .string()
+          .min(
+            3,
+            "Foydalanuvchi nomi kamida 3 ta belgidan iborat bo'lishi kerak",
+          ),
+        z.literal(""),
+      ])
+      .optional(),
+    phone_number: z
+      .union([
+        z
+          .string()
+          .regex(/^\+?[0-9\s\-()]+$/, "Telefon raqami noto'g'ri formatda")
+          .min(5, "Telefon raqami kamida 5 ta belgidan iborat bo'lishi kerak"),
+        z.literal(""),
+      ])
+      .optional(),
+  })
+  .refine(
+    (data) =>
+      Object.values(data).some((val) => val !== undefined && val !== ""),
+    { message: "Kamida bitta maydon kiritilishi kerak" },
+  );

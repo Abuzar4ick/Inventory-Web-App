@@ -6,6 +6,7 @@ import {
   logoutUser,
   getProfile,
   changePassword,
+  updateProfile,
 } from "./auth.controller";
 import { protectRoute } from "../../middlewares/authMiddleware";
 // validation schemas
@@ -14,12 +15,14 @@ import {
   signupSchema,
   loginSchema,
   changePasswordSchema,
+  updateProfileSchema,
 } from "../../db/validation/user.validation";
 
 router.post("/signup", validate(signupSchema), signupUser);
 router.post("/login", validate(loginSchema), loginUser);
 router.post("/logout", logoutUser);
 router.get("/profile", protectRoute, getProfile);
+router.put("/profile", protectRoute, validate(updateProfileSchema), updateProfile);
 router.post("/change-password", protectRoute, validate(changePasswordSchema), changePassword);
 
 // Protected route to check if user is authenticated
