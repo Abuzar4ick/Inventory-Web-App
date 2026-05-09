@@ -8,10 +8,14 @@ const LawProductsList = () => {
   const { products, areProductsGetting, getProducts } = useProductStore();
 
   useEffect(() => {
-    if (!products || products.length === 0) {
+    if (products === null) {
       getProducts();
     }
   }, [products, getProducts]);
+
+  const lowStockProducts = products?.filter(
+    (product) => product.quantity <= product.min_quantity * 1.3,
+  ) ?? [];
 
   return (
     <div className="main-container bg-white rounded-xl shadow-sm py-8 px-6 flex flex-col gap-6">
@@ -22,6 +26,10 @@ const LawProductsList = () => {
       <div>
         {areProductsGetting ? (
           <LawProductsListSkeleton />
+        ) : lowStockProducts.length === 0 ? (
+          <p className="text-center text-gray-400 py-6">
+            Kam qolgan mahsulotlar yo'q.
+          </p>
         ) : (
           <ul className="space-y-3">
             {products
