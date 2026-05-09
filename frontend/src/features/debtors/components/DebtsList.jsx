@@ -23,7 +23,7 @@ const DebtsList = () => {
   const [selectedDebt, setSelectedDebt] = useState(null);
 
   useEffect(() => {
-    if (!debts || debts.length === 0) {
+    if (debts === null) {
       getAllDebts();
     }
   }, [getAllDebts, debts]);
@@ -44,7 +44,7 @@ const DebtsList = () => {
         <tbody>
           {isLoading ? (
             <DebtsListSkeleton />
-          ) : debts.length === 0 ? (
+          ) : debts === null || debts.length === 0 ? (
             <tr>
               <td colSpan="7" className="text-center py-10 text-gray-400">
                 Hozircha qarzlar yo‘q
