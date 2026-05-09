@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 export const useDebtStore = create((set, get) => ({
   statistics: [],
-  debts: [],
+  debts: null,
   areStatisticsGetting: false,
   isAdding: false,
   areDebtsGetting: false,
