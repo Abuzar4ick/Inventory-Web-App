@@ -18,7 +18,7 @@ const ProductsTable = () => {
   const { products, getProducts, areProductsGetting, isDeleting } = useProductStore();
 
   useEffect(() => {
-    if (!products || products.length === 0) {
+    if (products === null) {
       getProducts();
     }
   }, [products, getProducts]);
@@ -74,6 +74,12 @@ const ProductsTable = () => {
             <tbody>
               {areProductsGetting ? (
                 <ProductsTableSkeleton />
+              ) : processedProducts.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="text-center text-gray-400 py-6">
+                    Mahsulotlar xali yo'q.
+                  </td>
+                </tr>
               ) : (
                 <>
                   {processedProducts.map((product) => {
