@@ -4,8 +4,8 @@ import { getErrorMessage } from "../lib/errorHandler";
 import toast from "react-hot-toast";
 
 export const useProductStore = create((set, get) => ({
-  products: [],
-  allProducts: [],
+  products: null,
+  allProducts: null,
   statistics: [],
   areProductsGetting: false,
   isAdding: false,
