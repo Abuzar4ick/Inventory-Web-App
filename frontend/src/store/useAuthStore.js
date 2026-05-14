@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
-  profile: [],
+  profile: null,
   isSigningUp: false,
   isLoggingIn: false,
   isCheckingAuth: false,
@@ -73,7 +73,7 @@ export const useAuthStore = create((set, get) => ({
 
     try {
       const response = await axiosInstance.get("/auth/profile");
-      set({ profileData: response.data.data });
+      set({ profile: response.data.user });
     } catch (error) {
       toast.error(getErrorMessage(error));
     } finally {
