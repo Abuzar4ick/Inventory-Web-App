@@ -11,6 +11,7 @@ export const useAuthStore = create((set, get) => ({
   isCheckingAuth: false,
   isProfileGetting: false,
   isProfileUpdating: false,
+  isPasswordChanging: false,
 
   checkAuth: async () => {
     set({ isCheckingAuth: true });
@@ -93,6 +94,19 @@ export const useAuthStore = create((set, get) => ({
       toast.error(getErrorMessage(error));
     } finally {
       set({ isProfileUpdating: false });
+    }
+  },
+
+  changePassword: async (data) => {
+    set({ isPasswordChanging: true });
+
+    try {
+      await axiosInstance.post("/auth/change-password", data);
+      toast.success("Parol muvaffaqiyatli o'zgartirildi!");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    } finally {
+      set({ isPasswordChanging: false });
     }
   },
 }));

@@ -25,7 +25,7 @@ export const loginSchema = z.object({
 // For changing password: userId, currentPassword, newPassword
 export const changePasswordSchema = z.object({
   currentPassword: z.string().min(1, "Joriy parol kiritilishi shart"),
-  newPassword: z.string().min(1, "Yangi parol kiritilishi shart"),
+  newPassword: z.string().min(6, "Yangi parol kamida 6 ta belgidan iborat bo‘lishi kerak"),
 });
 
 // For updating profile: name, username, phone_number — all optional but if provided, must be valid

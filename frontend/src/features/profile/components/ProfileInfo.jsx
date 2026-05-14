@@ -4,7 +4,8 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { FiLoader } from "react-icons/fi";
 
 const ProfileInfo = () => {
-  const { profile, getProfile, updateProfile, isProfileUpdating } = useAuthStore();
+  const { profile, getProfile, updateProfile, isProfileUpdating } =
+    useAuthStore();
   const [formData, setFormData] = useState({
     name: profile?.name || "",
     username: profile?.username || "",
@@ -38,6 +39,11 @@ const ProfileInfo = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!formData.name || !formData.username) {
+      toast.error("Iltimos, ism va foydalanuvchi nomini kiriting!");
+      return;
+    }
 
     updateProfile(formData).then(() => getProfile());
   };
@@ -96,7 +102,11 @@ const ProfileInfo = () => {
             className="btn btn-primary disabled:cursor-pointer"
             disabled={isDisabled() || isProfileUpdating}
           >
-            {isProfileUpdating ? (<FiLoader className="animate-spin text-lg" />) : "Saqlash"}
+            {isProfileUpdating ? (
+              <FiLoader className="animate-spin text-lg" />
+            ) : (
+              "Saqlash"
+            )}
           </button>
         </form>
       </div>
