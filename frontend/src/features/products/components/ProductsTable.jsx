@@ -74,7 +74,7 @@ const ProductsTable = () => {
             <tbody>
               {areProductsGetting ? (
                 <ProductsTableSkeleton />
-              ) : processedProducts.length === 0 ? (
+              ) : processedProducts.length === 0 || !products ? (
                 <tr>
                   <td colSpan={5} className="text-center text-gray-400 py-6">
                     Mahsulotlar xali yo'q.
