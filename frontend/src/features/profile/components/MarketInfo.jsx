@@ -27,6 +27,7 @@ const MarketInfo = () => {
               type="text"
               defaultValue={profile?.name ? profile.name + " Do'koni" : ""}
               className="input input-bordered bg-[#f6f7f9] w-full"
+              disabled
             />
           </div>
 
