@@ -2,7 +2,7 @@ export class AppError extends Error {
   public readonly statusCode: number;
   public readonly code: string;
 
-  constructor(message: string, statusCode = 500, isOperational = true, code = "INTERNAL_SERVER_ERROR") {
+  constructor(message: string, statusCode = 500, code = "INTERNAL_SERVER_ERROR") {
     super(message);
     this.statusCode = statusCode;
     this.code = code;
