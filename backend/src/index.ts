@@ -12,6 +12,7 @@ import userRoutes from "./modules/auth/auth.routes";
 import productRoutes from "./modules/products/products.routes";
 import debtsRoutes from "./modules/debts/debts.routes";
 import feedbacksRoutes from "./modules/feedbacks/feedbacks.routes";
+import adminRoutes from "./modules/admin/admin.routes";
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use("/api/auth", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/debts", debtsRoutes);
 app.use("/api/feedbacks", feedbacksRoutes);
+app.use("/api/admin", adminRoutes);
 
 // 404 handler
 app.use((_req, _res, next) => {
