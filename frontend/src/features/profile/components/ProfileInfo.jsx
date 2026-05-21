@@ -6,6 +6,7 @@ import { FiLoader } from "react-icons/fi";
 const ProfileInfo = () => {
   const { profile, getProfile, updateProfile, isProfileUpdating } =
     useAuthStore();
+    
   const [formData, setFormData] = useState({
     name: profile?.name || "",
     username: profile?.username || "",

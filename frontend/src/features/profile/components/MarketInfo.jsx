@@ -8,7 +8,7 @@ const MarketInfo = () => {
     if (!profile || profile.length === 0) {
       getProfile();
     }
-  }, [profile, getProfile]);
+  }, []);
 
   return (
     <div className="w-full flex justify-center px-4">
