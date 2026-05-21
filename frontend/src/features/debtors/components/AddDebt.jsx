@@ -33,7 +33,7 @@ const AddDebt = () => {
       date: data.date,
       description: data.description,
       quantity: Number(data.quantity),
-      money_amount: Number(data.money_amount),
+      money_amount: Number(data.money_amount * data.quantity), // Total amount
     }).then(() => {
       // Close the modal after successful addition
       document.getElementById("add_debtor_modal").close();
